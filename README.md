@@ -13,7 +13,7 @@ DB_II_Project_2
 <li>Transaction</li>
 <li>Step</li>
 </ul>
-<h3>kesm el 7abashtakanat</h3>
+<h3>Kesm el 7abashtakanat</h3>
 <ul>
 <li>SQL processing 8%</li>
 <li>Command line tool 2%</li>
