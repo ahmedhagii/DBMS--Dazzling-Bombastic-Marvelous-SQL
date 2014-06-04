@@ -1,5 +1,8 @@
 package eg.edu.guc.dbms.classes;
 
+import eg.edu.guc.dbms.pages.Page;
+import eg.edu.guc.dbms.pages.PageID;
+
 public class BufferManager {
 	
 	// BufferManager manages the reading and writing of pages from 
