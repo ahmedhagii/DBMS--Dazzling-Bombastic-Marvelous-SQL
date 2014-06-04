@@ -1,7 +1,6 @@
 DB_II_Project_2
 ===============
 
-<h3>Kesm el 20%</h3>
 <table>
 <tr>
 <td>Task</td>
