@@ -24,12 +24,6 @@ public class Transaction {
 	private LogManager logManager;
 	private Vector<Step> vSteps;
 	
-	
-	
-	
-	
-	
-	
 	public void init( BufferManager bufManager, 
 					  LogManager logManager, 
 					  Vector<Step> vSteps){
