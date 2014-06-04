@@ -2,17 +2,43 @@ DB_II_Project_2
 ===============
 
 <h3>Kesm el 20%</h3>
-<ul>
-<li>BufferManager</li>
-<li>LogManager</li>
-<li>TransactionManager</li>
-</ul>
-<h3>Kesm el 10%</h3>
-<ul>
-<li>RecoveryManager</li>
-<li>Transaction</li>
-<li>Step</li>
-</ul>
+<table>
+<tr>
+<td>Task</td>
+<td>Percentage</td>
+<td>Assignee</td>
+</tr>
+<tr>
+<td>BufferManager</td>
+<td>20%</td>
+<td>tba</td>
+</tr>
+<tr>
+<td>LogManager</td>
+<td>20%</td>
+<td>tba</td>
+</tr>
+<tr>
+<td>TransactionManager</td>
+<td>20%</td>
+<td>tba</td>
+</tr>
+<tr>
+<td>RecoveryManager</td>
+<td>10%</td>
+<td>tba</td>
+</tr>
+<tr>
+<td>Transaction</td>
+<td>10%</td>
+<td>tba</td>
+</tr>
+<tr>
+<td>Step</td>
+<td>10%</td>
+<td>tba</td>
+</tr>
+</table>
 <h3>Kesm el 7abashtakanat</h3>
 <ul>
 <li>SQL processing 8%</li>
