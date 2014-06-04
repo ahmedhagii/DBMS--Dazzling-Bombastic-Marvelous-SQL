@@ -1,6 +1,7 @@
 package eg.edu.guc.dbms.classes;
 
 import java.util.Vector;
+import eg.edu.guc.dbms.steps.Step;
 
 public class Transaction {
 	// Transaction class runs in its own thread to execute 
@@ -13,15 +14,15 @@ public class Transaction {
 	// LogManager to record the steps being executed. 
 	// The execute method starts the thread associated with 
 	// the Transaction to run the steps. 
-	// When a transaction ends, make sure to clear all it’s 
+	// When a transaction ends, make sure to clear all its 
 	// attributes by setting them to null. This will help Java 
 	// garbage collector to identify those objects as being unused 
 	// and removes them from memory faster. 
 	 
 	// methods 
 	public void init( BufferManager bufManager, 
-	 LogManager logManager, 
-	 Vector<Step> vSteps){
+					  LogManager logManager, 
+					  Vector<Step> vSteps){
 		
 	}
 	 
