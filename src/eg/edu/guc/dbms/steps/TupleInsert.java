@@ -1,8 +1,8 @@
 package eg.edu.guc.dbms.steps;
 
-public class TupleUpdate extends Step {
+public class TupleInsert extends Step {
 
-	public TupleUpdate() {
+	public TupleInsert() {
 		// TODO Auto-generated constructor stub
 	}
 
