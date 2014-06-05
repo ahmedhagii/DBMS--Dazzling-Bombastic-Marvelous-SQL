@@ -1,5 +1,8 @@
 package eg.edu.guc.dbms.classes;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import eg.edu.guc.dbms.pages.Page;
 import eg.edu.guc.dbms.pages.PageID;
 
@@ -29,12 +32,35 @@ public class BufferManager {
 	// whether the page is being read for modification or not.
 	// PageID and Page classes are left for you to define.
 
+	int MinimumEmptyBufferSlots;
+	int MaximumUsedBufferSlots;
+	int usedSlots;
+	int EmptySlots;
+	HashMap<PageID,Page> UsedSlots;
+	
 	// methods
 	public void init() {
-
+		UsedSlots = new HashMap<PageID,Page>();
+		MinimumEmptyBufferSlots = 3 ;
+		MaximumUsedBufferSlots = 20;
+		usedSlots = 0;
+		EmptySlots = MaximumUsedBufferSlots;
 	}
 
 	public synchronized void read(PageID pageID, Page page, boolean bModify) {
+		
+		if (UsedSlots.containsKey(pageID)){
+			page = new Page ();
+			page = UsedSlots.get(pageID);
+			return;
+		}
+		if (usedSlots < MaximumUsedBufferSlots && EmptySlots>MinimumEmptyBufferSlots){
+			usedSlots ++;  EmptySlots--;
+			
+			
+		}
+		
+		
 
 	}
 
