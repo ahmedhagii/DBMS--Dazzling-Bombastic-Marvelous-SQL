@@ -28,7 +28,7 @@ public class CreateIndex implements Command {
 		this.factory = factory;
 	}
 
-	@Override
+	
 	public void execute() throws DBEngineException {
 		Hashtable<String, Hashtable<String, Hashtable<String,String>>> data 
 		= properties.getData();

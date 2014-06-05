@@ -33,7 +33,7 @@ public class InsertCommand implements Command {
 		this.properties = properties;
 		this.htblColNameValue = htblColNameValue;
 	}
-	@Override
+	
 	public void execute() throws DBEngineException {
 		if(properties.getData().get(tableName) == null)
 			throw new DBEngineException("Table name is wrong or it doesn't exist.");

@@ -2,6 +2,8 @@ package eg.edu.guc.dbms.classes;
 
 import java.util.Hashtable;
 
+import eg.edu.guc.dbms.pages.PageID;
+
 public class LogManager {
 	// LogManager 
 	// LogManager is class shared by all running Transactions. 

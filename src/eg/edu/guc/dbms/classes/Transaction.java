@@ -20,9 +20,18 @@ public class Transaction {
 	// and removes them from memory faster. 
 	 
 	// methods 
+	private BufferManager bufManager ;
+	private LogManager logManager;
+	private Vector<Step> vSteps;
+	
 	public void init( BufferManager bufManager, 
 					  LogManager logManager, 
 					  Vector<Step> vSteps){
+		
+		this.bufManager = bufManager;
+		this.logManager = logManager;
+		this.vSteps = vSteps;
+		
 		
 	}
 	 
