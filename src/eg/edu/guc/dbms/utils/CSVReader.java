@@ -111,7 +111,7 @@ public class CSVReader implements CSVReaderInterface{
 			if (index == row) {
 				line = data;
 			}
-			//line will be equal to null if data = null (delete row)
+			//line will be equal to null if data == null (delete row)
 			if (line != null) {
 				writer.println(line);
 			}

@@ -161,8 +161,7 @@ public class SelectCommand implements Command {
 		int tablePages = reader.getLastPageIndex(this.tableName);
 
 		for (int i = 0; i <= tablePages; i++) {
-			ArrayList<Hashtable<String, String>> res = reader.loadPage(
-					tableName, i);
+			ArrayList<Hashtable<String, String>> res = page.getTuples();
 			for (int j = 0; j < res.size(); j++) {
 				if (res.get(j) == null) { // Deleted Record
 					continue;
