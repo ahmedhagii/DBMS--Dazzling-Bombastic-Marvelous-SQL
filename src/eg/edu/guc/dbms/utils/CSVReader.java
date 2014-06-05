@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +54,7 @@ public class CSVReader implements CSVReaderInterface{
 //		System.out.println(columnsOrder);
 	}
 	
-	@Override
+	
 	public synchronized ArrayList<Hashtable<String, String>> loadPage(String tableName, int pageNumber)
 			throws DBEngineException {
 		try {
@@ -79,7 +80,7 @@ public class CSVReader implements CSVReaderInterface{
 		}
 	}
 	
-	@Override
+	
 	public synchronized Hashtable<String, String> loadRow(String tableName, int pageNumber,
 			int rowNumber) throws DBEngineException {
 		Hashtable<String, String> result = new Hashtable<String, String>();
@@ -121,12 +122,33 @@ public class CSVReader implements CSVReaderInterface{
 		file.delete();
 		tmpFile.renameTo(file);
 	}
+	
+	public synchronized void writePage(String pageName,ArrayList<Hashtable<String,String>> tuples, String filePath) throws IOException {
+		File file = new File(filePath);
+		File tmpFile = new File(tmpFilePath);
+		PrintWriter writer = new PrintWriter(new FileWriter(tmpFile));
+		for(int i=0;i<tuples.size();i++){
+		String oneTuple = pageName+",";
+		 Iterator<String> x = tuples.get(i).keySet().iterator();
+		 while(x.hasNext()){
+			 oneTuple += x.next();
+		 
+		 if(x.hasNext()){
+			 oneTuple += ",";
+		 	}
+		 }
+		 writer.println(oneTuple);
+		}
+		writer.flush();
+		file.delete();
+		tmpFile.renameTo(file);
+	}
 
 	/*
 	 * The format of the file is tablename_pagenumber
 	 */ 
 	
-	@Override
+	
 	public synchronized void createTablePage(String tableName, int newPageNumber, String[] columns )
 			throws DBEngineException {
 		if ((new File(encodePageName(tableName,  newPageNumber)).exists())) {
@@ -172,7 +194,7 @@ public class CSVReader implements CSVReaderInterface{
 	}
 
 	
-	@Override
+	
 	public synchronized void appendToMetaDataFile(Hashtable<String, String> data)
 			throws DBEngineException {
 		try {
@@ -201,7 +223,7 @@ public class CSVReader implements CSVReaderInterface{
 		}
 	}
 
-	@Override
+	
 	public synchronized int appendToTable(String tableName, int pageNumber,
 			Hashtable<String, String> data) throws DBEngineException {
 		int lastRow = -1;
@@ -219,7 +241,7 @@ public class CSVReader implements CSVReaderInterface{
 		return lastRow;
 	}
 
-	@Override
+	
 	public synchronized void deleteRow(String tableName, int pageNumber, int rowNumber)
 			throws DBEngineException {
 		try {
@@ -230,7 +252,7 @@ public class CSVReader implements CSVReaderInterface{
 		
 	}
 
-	@Override
+	
 	public synchronized int appentToTable(String tableName, Hashtable<String, String> data) throws DBEngineException {
 		int lastPage = getLastPageIndex(tableName);
 		return appendToTable(tableName, lastPage, data);
@@ -260,17 +282,17 @@ public class CSVReader implements CSVReaderInterface{
 		}
 	}
 
-	@Override
+	
 	public void listenToMetaDataFileUpdates(MetaDataListener properties) {
 		metadataObservers.add(properties);
 	}	
 
-	@Override
+	
 	public int getLastPageIndex(String tableName) {
 		return numberOfPages.get(tableName) - 1;
 	}
 
-	@Override
+	
 	public int getLastRow(String tableName, int pageNumber) {
 		return numberOfRows.get(encodePageName(tableName, pageNumber)) - 1;
 	}

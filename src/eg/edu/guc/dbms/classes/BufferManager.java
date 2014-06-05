@@ -1,10 +1,14 @@
 package eg.edu.guc.dbms.classes;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
+import eg.edu.guc.dbms.exceptions.DBEngineException;
 import eg.edu.guc.dbms.pages.Page;
 import eg.edu.guc.dbms.pages.PageID;
+import eg.edu.guc.dbms.utils.CSVReader;
 
 public class BufferManager {
 
@@ -37,35 +41,52 @@ public class BufferManager {
 	int usedSlots;
 	int EmptySlots;
 	HashMap<PageID,Page> UsedSlots;
+	HashMap<PageID,Boolean> modified ;
+	CSVReader reader;
 	
 	// methods
 	public void init() {
-		UsedSlots = new HashMap<PageID,Page>();
-		MinimumEmptyBufferSlots = 3 ;
-		MaximumUsedBufferSlots = 20;
-		usedSlots = 0;
-		EmptySlots = MaximumUsedBufferSlots;
+	this.UsedSlots = new HashMap<PageID,Page>();
+	this.modified = new HashMap<PageID,Boolean>();
+	this.MinimumEmptyBufferSlots = 3 ;
+	this.MaximumUsedBufferSlots = 20;
+	this.usedSlots = 0;
+	this.EmptySlots = MaximumUsedBufferSlots;
+	}
+	
+	public  BufferManager(CSVReader reader){
+		this.reader = reader;
 	}
 
-	public synchronized void read(PageID pageID, Page page, boolean bModify) {
+	public synchronized void read(PageID pageID, Page page, boolean bModify) throws DBEngineException, IOException {
 		
 		if (UsedSlots.containsKey(pageID)){
 			page = new Page ();
+//			UsedSlots.get(pageID).setPinCount(UsedSlots.get(pageID).getPinCount()+1);
 			page = UsedSlots.get(pageID);
 			return;
-		}
-		if (usedSlots < MaximumUsedBufferSlots && EmptySlots>MinimumEmptyBufferSlots){
-			usedSlots ++;  EmptySlots--;
-			
-			
-		}
-		
-		
+		} else if 
+			(usedSlots >= MaximumUsedBufferSlots && EmptySlots <= MinimumEmptyBufferSlots){
+			PageID x = UsedSlots.keySet().iterator().next();
+			if (modified.get(x)) 
+			        write(x,UsedSlots.get(x));
+		      modified.remove(x);
+		      UsedSlots.remove(x);
 
+		} else {	
+			usedSlots ++;  EmptySlots--;
+		}
+		page = new Page();
+//		page.setPinCount(1);
+		page.setTableName(pageID.getTableName());
+		page.setTuples(reader.loadPage(pageID.getTableName(), pageID.getTableNumber()));
+		UsedSlots.put(pageID, page);
+		modified.put(pageID,bModify);
 	}
 
-	public synchronized void write(PageID pageID, Page page) {
-
+	public synchronized void write(PageID pageID, Page page) throws IOException {
+		reader.writePage(pageID.getTableName(), page.getTuples(),
+				"data/"+pageID.getTableName()+"_"+pageID.getTableNumber()+".csv");
 	}
 
 }

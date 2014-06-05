@@ -15,9 +15,14 @@ public class PageID {
 	}
 	
 	public String getTableName(){
-	 StringTokenizer str = new StringTokenizer(pageID);
-	 return str.nextToken();
+	 String[] str = pageID.split("_");
+	 return str[0];
 	}
+	
+	public int getTableNumber(){
+		 String[] str = pageID.split("_");
+		 return Integer.parseInt(str[1]);
+		}
 	
 	public void setPageID(String pageID) {
 		this.pageID = pageID;
