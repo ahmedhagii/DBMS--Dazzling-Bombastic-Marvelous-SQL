@@ -7,6 +7,7 @@ import java.util.Set;
 
 import eg.edu.guc.dbms.exceptions.DBEngineException;
 import eg.edu.guc.dbms.interfaces.Command;
+import eg.edu.guc.dbms.pages.Page;
 import eg.edu.guc.dbms.utils.CSVReader;
 import eg.edu.guc.dbms.utils.Properties;
 import eg.edu.guc.dbms.utils.btrees.BTreeAdopter;
@@ -19,6 +20,7 @@ public class SelectCommand implements Command {
 	Hashtable<String, String> htblColNameValue;
 	String strOperator;
 	Properties properties;
+	Page page;
 
 	// The final arraylist of objects
 	ArrayList<Hashtable<String, String>> results;
@@ -31,13 +33,14 @@ public class SelectCommand implements Command {
 
 	public SelectCommand(BTreeFactory btfactory, CSVReader reader,
 			Properties properties, String tableName,
-			Hashtable<String, String> htblColNameValue, String strOperator) {
+			Hashtable<String, String> htblColNameValue, String strOperator,Page page) {
 		this.btfactory = btfactory;
 		this.reader = reader;
 		this.tableName = tableName;
 		this.htblColNameValue = htblColNameValue;
 		this.strOperator = strOperator;
 		this.properties = properties;
+		this.page = page;
 	}
 
 	private ArrayList<String> intersect(ArrayList<String> resultsPointer,
@@ -110,26 +113,12 @@ public class SelectCommand implements Command {
 
 		for (String key : keys) {
 
-			if (properties.isIndexed(this.tableName, key)) {
 
-				BTreeAdopter tree = null;
-				try {
-					tree = btfactory.getBtree(this.tableName, key);
-
-				} catch (DBEngineException e) {
-				}
-				try {
-					partialRecords.add((ArrayList<String>) tree
-							.find(htblColNameValue.get(key)));
-				} catch (IOException e) {
-				}
-			} else {
 
 				ArrayList<String> partialRecord = new ArrayList<String>();
 				int tablePages = reader.getLastPageIndex(this.tableName);
 				for (int i = 0; i <= tablePages; i++) {
-					ArrayList<Hashtable<String, String>> res = reader.loadPage(
-							tableName, i);
+					ArrayList<Hashtable<String, String>> res = page.getTuples();
 					for (int j = 0; j < res.size(); j++) {
 						if (res.get(j) != null
 								&& res.get(j).get(key)
@@ -140,7 +129,7 @@ public class SelectCommand implements Command {
 					}
 				}
 				partialRecords.add(partialRecord);
-			}
+			
 		}
 
 	}
