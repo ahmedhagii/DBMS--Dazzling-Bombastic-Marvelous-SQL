@@ -49,7 +49,7 @@ public class DBApp {
 	public void insertIntoTable(String strTableName,
 								Hashtable<String,String> htblColNameValue)
 										throws DBEngineException {
-		InsertCommand insertCommand = new InsertCommand(this.bTreeFactory, reader, strTableName, properties, htblColNameValue);
+		InsertCommand insertCommand = new InsertCommand(this.bTreeFactory, reader, strTableName, properties, htblColNameValue, null);
 		insertCommand.execute();
 		
 	}
@@ -58,7 +58,7 @@ public class DBApp {
 								Hashtable<String,String> htblColNameValue,
 								String strOperator)
 										throws DBEngineException {
-		DeleteCommand delete = new DeleteCommand(strTableName, htblColNameValue, strOperator, reader,properties,bTreeFactory);
+		DeleteCommand delete = new DeleteCommand(strTableName, htblColNameValue, strOperator, reader,properties,bTreeFactory, null);
 		delete.execute(); 
 	
 	}
@@ -68,7 +68,7 @@ public class DBApp {
 									Hashtable<String,String> htblColNameValue,
 									String strOperator)
 											throws DBEngineException {
-		SelectCommand selectCommand = new SelectCommand(this.bTreeFactory, this.reader,properties, strTable, htblColNameValue, strOperator);
+		SelectCommand selectCommand = new SelectCommand(this.bTreeFactory, this.reader,properties, strTable, htblColNameValue, strOperator, null);
 		selectCommand.execute();
 		Iterator< Hashtable<String, String >> results = selectCommand.getResults().iterator();
 		if(results.hasNext() == false){

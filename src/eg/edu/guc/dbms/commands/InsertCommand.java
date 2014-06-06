@@ -10,6 +10,7 @@ import javax.swing.text.TabableView;
 
 import eg.edu.guc.dbms.exceptions.DBEngineException;
 import eg.edu.guc.dbms.interfaces.Command;
+import eg.edu.guc.dbms.pages.Page;
 import eg.edu.guc.dbms.utils.CSVReader;
 import eg.edu.guc.dbms.utils.Properties;
 import eg.edu.guc.dbms.utils.Utils;
@@ -23,15 +24,16 @@ public class InsertCommand implements Command {
 	String tableName;
 	Properties properties;
 	Hashtable<String,String> htblColNameValue; 
-	
+	Page page;
 	
 	public InsertCommand(BTreeFactory btFactory, CSVReader reader, String tableName, 
-			Properties properties, Hashtable<String,String> htblColNameValue) {
+			Properties properties, Hashtable<String,String> htblColNameValue, Page page) {
 		this.btFactory = btFactory;
 		this.reader = reader;
 		this.tableName = tableName;
 		this.properties = properties;
 		this.htblColNameValue = htblColNameValue;
+		this.page = page;
 	}
 	
 	public void execute() throws DBEngineException {
@@ -71,25 +73,7 @@ public class InsertCommand implements Command {
 				}
 			}
 			
-			int lastPage = reader.getLastPageIndex(tableName);
-			int lastRow = reader.getLastRow(tableName, lastPage);
-			
-			if(lastRow+1 == properties.getMaximumPageSize()) {
-				lastPage++;
-				reader.createTablePage(tableName, lastPage,Utils.setToArray(properties.getData().get(this.tableName).keySet()));		
-			}	
-			int row = reader.appendToTable(tableName, lastPage, htblColNameValue);
-			ArrayList<String> indexedColumns = properties.getIndexedColumns(tableName);
-			
-			for (String column : indexedColumns) {
-				String pointer = tableName + " " + lastPage + " " + row;
-				tree = btFactory.getBtree(tableName, column);
-				try {
-					tree.insert(htblColNameValue.get(column), pointer);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}			
-			}
+			page.insertTuple(htblColNameValue);
 		}
 		
 }

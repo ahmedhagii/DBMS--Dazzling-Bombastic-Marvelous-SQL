@@ -16,10 +16,20 @@ public class Page {
 	public ArrayList<Hashtable<String,String>> getTuples() {
 		return tuples;
 	}
-
+	
+	public void insertTuple(Hashtable<String,String>tuple){
+		tuples.add(tuple);
+	}
+		
 	public void setTuples(ArrayList<Hashtable<String,String>> tuples) {
 		this.tuples = tuples;
 	}
+
+	public void deleteTuples(int row){
+		tuples.add(row, null);
+		
+	}
+
 	public void setTableName(String name) {
 		this.tableName = name;
 	}
@@ -31,5 +41,6 @@ public class Page {
 	public int getPinCount() {
 		return this.pinCount;
 	}
+
 
 }

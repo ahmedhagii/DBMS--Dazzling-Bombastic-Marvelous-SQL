@@ -50,7 +50,7 @@ public class CreateIndex implements Command {
 		BTreeAdopter tree = factory.createTree(tableName, columnName);
 				
 		SelectCommand select = new SelectCommand(factory, reader, properties,
-				tableName, null, null);
+				tableName, null, null,null);
 		select.execute();
 		ArrayList<Hashtable<String, String>> rows = select.getResults();
 		ArrayList<String> pointers = select.getResultPointers();	
