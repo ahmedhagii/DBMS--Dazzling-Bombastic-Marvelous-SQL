@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -116,6 +117,27 @@ public class CSVReader implements CSVReaderInterface{
 				writer.println(line);
 			}
 			index++;
+		}
+		writer.flush();
+		file.delete();
+		tmpFile.renameTo(file);
+	}
+	
+	public synchronized void writePage(String pageName,ArrayList<Hashtable<String,String>> tuples, String filePath) throws IOException {
+		File file = new File(filePath);
+		File tmpFile = new File(tmpFilePath);
+		PrintWriter writer = new PrintWriter(new FileWriter(tmpFile));
+		for(int i=0;i<tuples.size();i++){
+		String oneTuple = pageName+",";
+		 Iterator<String> x = tuples.get(i).keySet().iterator();
+		 while(x.hasNext()){
+			 oneTuple += x.next();
+		 
+		 if(x.hasNext()){
+			 oneTuple += ",";
+		 	}
+		 }
+		 writer.println(oneTuple);
 		}
 		writer.flush();
 		file.delete();
