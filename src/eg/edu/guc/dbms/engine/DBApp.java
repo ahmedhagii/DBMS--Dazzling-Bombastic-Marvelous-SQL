@@ -49,7 +49,7 @@ public class DBApp {
 	public void insertIntoTable(String strTableName,
 								Hashtable<String,String> htblColNameValue)
 										throws DBEngineException {
-		InsertCommand insertCommand = new InsertCommand(this.bTreeFactory, reader, strTableName, properties, htblColNameValue);
+		InsertCommand insertCommand = new InsertCommand(this.bTreeFactory, reader, strTableName, properties, htblColNameValue, null);
 		insertCommand.execute();
 		
 	}
