@@ -24,7 +24,7 @@ public class CreateTableCommand implements Command {
 	
 	public CreateTableCommand(String strTableName,
 							Hashtable<String,String> htblColNameType,
-							Hashtable<String,String>htblColNameRefs,
+							Hashtable<String,String> htblColNameRefs,
 							String strKeyColName, CSVReader reader,BTreeFactory btreeFactory,Properties properties){
 		this.strTableName=strTableName; 
 		this.htblColNameType=htblColNameType;

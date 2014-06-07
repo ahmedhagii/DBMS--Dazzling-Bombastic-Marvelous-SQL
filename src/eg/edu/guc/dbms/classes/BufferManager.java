@@ -60,6 +60,7 @@ public class BufferManager {
 		this.reader = reader;
 	}
 
+
 	public synchronized void read(PageID pageID, Page page, boolean bModify) throws DBEngineException, IOException {
 		
 		if (UsedSlots.containsKey(pageID)){
