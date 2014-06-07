@@ -19,7 +19,7 @@ public class TupleDelete extends Step {
 	private CSVReader reader;
 	private Properties properties;
 	private BTreeFactory btfactory;
-	private Page page;
+	
 	
 	
 	
@@ -32,12 +32,11 @@ public class TupleDelete extends Step {
 		this.reader = reader;
 		this.properties = properties;
 		this.btfactory = btfactory;
-		this.page = page;
+		
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public void execute() {
+	public void execute(Page page) {
 		DeleteCommand command = new DeleteCommand(strTableName, htblColNameValue, strOperator, reader, properties, btfactory, page);
 		try {
 			command.execute();
@@ -45,6 +44,12 @@ public class TupleDelete extends Step {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
