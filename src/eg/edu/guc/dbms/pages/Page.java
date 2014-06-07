@@ -26,6 +26,7 @@ public class Page {
 	}
 
 	public void deleteTuples(int row){
+		tuples.remove(row);
 		tuples.add(row, null);
 		
 	}
