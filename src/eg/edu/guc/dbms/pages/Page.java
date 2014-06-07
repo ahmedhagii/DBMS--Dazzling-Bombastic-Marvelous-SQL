@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class Page {
-	
+
 	String tableName;
 	int pinCount;
 	ArrayList<Hashtable<String,String>> tuples = new ArrayList<Hashtable<String,String>>();
