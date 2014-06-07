@@ -19,7 +19,6 @@ public class TupleUpdate extends Step {
 	private CSVReader reader;
 	private Properties properties;
 	private BTreeFactory btfactory;
-	private Page page;
 	private Hashtable<String, String> htblNewValues;
 	
 	public TupleUpdate(String strTableName,
@@ -34,10 +33,9 @@ public class TupleUpdate extends Step {
 		this.reader = reader;
 		this.properties = properties;
 		this.btfactory = btfactory;
-		this.page = page;
 	}
 
-	public TupleUpdate() {
+	public void execute(Page page) {
 		SelectCommand select = new SelectCommand(btfactory, reader, properties, strOperator, htblColNameValue, strOperator, page);
 		try {
 			select.execute();
