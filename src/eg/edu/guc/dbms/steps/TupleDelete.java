@@ -25,19 +25,19 @@ public class TupleDelete extends Step {
 	
 	
 	public TupleDelete(String strTableName, Hashtable<String,String>htblColNameValue,String strOperator, CSVReader reader, Properties properties,
-			BTreeFactory btfactory, Page page) {
+			BTreeFactory btfactory) {
 		this.strTableName = strTableName;
 		this.htblColNameValue = htblColNameValue;
 		this.strOperator = strOperator;
 		this.reader = reader;
 		this.properties = properties;
 		this.btfactory = btfactory;
-		this.page = page;
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void execute() {
+		this.page = page;
 		DeleteCommand command = new DeleteCommand(strTableName, htblColNameValue, strOperator, reader, properties, btfactory, page);
 		try {
 			command.execute();
