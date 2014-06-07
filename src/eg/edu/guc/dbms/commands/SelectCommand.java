@@ -74,9 +74,9 @@ public class SelectCommand implements Command {
 
 	
 	public void execute() throws DBEngineException {
-		if (properties.getData().get(tableName) == null) {
+		/*if (properties.getData().get(tableName) == null) {
 			throw new DBEngineException("This table doesn't exist");
-		} else if (htblColNameValue == null && strOperator == null) {
+		} else*/ if (htblColNameValue == null && strOperator == null) {
 			selectAll();
 		} else {
 			validate();
@@ -93,13 +93,13 @@ public class SelectCommand implements Command {
 			throw new DBEngineException("Unknown Opertator");
 		}
 
-		Hashtable<String, Hashtable<String, String>> table = properties
-				.getData().get(tableName);
+		
+		Set<String>columns = page.getTuples().get(0).keySet();
 
 		Set<String> keys = this.htblColNameValue.keySet();
 
 		for (String key : keys) {
-			if (table.get(key) == null) {
+			if (!columns.contains(key)) {
 				throw new DBEngineException("Wrong Column Name");
 			}
 		}
