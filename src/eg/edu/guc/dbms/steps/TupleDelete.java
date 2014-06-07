@@ -14,7 +14,7 @@ public class TupleDelete extends Step {
 
 	
 	private String  strTableName;
-	private Hashtable<String,String> htblColnameValue;
+	private Hashtable<String,String> htblColNameValue;
 	private String strOperator;
 	private CSVReader reader;
 	private Properties properties;
@@ -24,7 +24,15 @@ public class TupleDelete extends Step {
 	
 	
 	
-	public TupleDelete() {
+	public TupleDelete(String strTableName, Hashtable<String,String>htblColNameValue,String strOperator, CSVReader reader, Properties properties,
+			BTreeFactory btfactory, Page page) {
+		this.strTableName = strTableName;
+		this.htblColNameValue = htblColNameValue;
+		this.strOperator = strOperator;
+		this.reader = reader;
+		this.properties = properties;
+		this.btfactory = btfactory;
+		this.page = page;
 		// TODO Auto-generated constructor stub
 	}
 
