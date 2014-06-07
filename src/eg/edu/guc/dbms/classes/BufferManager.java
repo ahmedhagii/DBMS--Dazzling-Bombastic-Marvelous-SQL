@@ -28,14 +28,15 @@ public class BufferManager {
 	// BufferManager.read() method will accept a flag indicating
 	// whether the page is being read for modification or not.
 	// PageID and Page classes are left for you to define.
-
+	
+	
 	// methods
 	public void init() {
 
 	}
 
 	public synchronized void read(PageID pageID, Page page, boolean bModify) {
-
+		
 	}
 
 	public synchronized void write(PageID pageID, Page page) {

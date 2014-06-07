@@ -3,7 +3,7 @@ package eg.edu.guc.dbms.pages;
 import java.util.ArrayList;
 
 public class Page {
-	
+
 	String tableName;
 	ArrayList<String> tuples = new ArrayList<String>();
 	

@@ -1,9 +1,10 @@
 package eg.edu.guc.dbms.classes;
 
 import java.util.Vector;
+
 import eg.edu.guc.dbms.steps.Step;
 
-public class Transaction {
+public class Transaction implements Runnable {
 	// Transaction class runs in its own thread to execute 
 	// a sequence of steps. 
 	// A transaction object is not reusable, i.e. every incoming SQL 
@@ -25,8 +26,10 @@ public class Transaction {
 					  Vector<Step> vSteps){
 		
 	}
-	 
-	public void execute( ){
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
 		
 	}
 

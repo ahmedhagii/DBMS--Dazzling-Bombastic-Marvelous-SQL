@@ -49,7 +49,7 @@ public class InsertCommand implements Command {
 					tree = btFactory.getBtree(tableName, column);
 					try {
 						if(tree.find(htblColNameValue.get(column)) != null)
-							throw new DBEngineException("Th primary key you're trying to insert is not unique.");
+							throw new DBEngineException("The primary key you're trying to insert is not unique.");
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
