@@ -28,7 +28,7 @@ public class CreateIndex implements Command {
 		this.factory = factory;
 	}
 
-	@Override
+	
 	public void execute() throws DBEngineException {
 		Hashtable<String, Hashtable<String, Hashtable<String,String>>> data 
 		= properties.getData();
@@ -50,7 +50,7 @@ public class CreateIndex implements Command {
 		BTreeAdopter tree = factory.createTree(tableName, columnName);
 				
 		SelectCommand select = new SelectCommand(factory, reader, properties,
-				tableName, null, null);
+				tableName, null, null,null);
 		select.execute();
 		ArrayList<Hashtable<String, String>> rows = select.getResults();
 		ArrayList<String> pointers = select.getResultPointers();	

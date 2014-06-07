@@ -6,6 +6,7 @@ import java.util.Hashtable;
 
 import eg.edu.guc.dbms.exceptions.DBEngineException;
 import eg.edu.guc.dbms.interfaces.Command;
+import eg.edu.guc.dbms.pages.Page;
 import eg.edu.guc.dbms.utils.CSVReader;
 import eg.edu.guc.dbms.utils.Properties;
 import eg.edu.guc.dbms.utils.btrees.BTreeAdopter;
@@ -20,35 +21,38 @@ public class DeleteCommand implements Command {
 	BTreeFactory btfactory;
 	Properties properties;
 	SelectCommand select;
+	Page page;
 	public DeleteCommand(String strTableName,Hashtable<String,String> htblColNameValue,
-								String strOperator, CSVReader reader,Properties properties,BTreeFactory btfactory){
+								String strOperator, CSVReader reader,Properties properties,BTreeFactory btfactory,Page page){
 		this.strTableName=strTableName; 
 		this.htblColNameValue=htblColNameValue; 
 		this.strOperator=strOperator;
 		this.reader=reader;
 		this.properties = properties;
 		this.btfactory = btfactory;
-		select = new SelectCommand(this.btfactory,this.reader, this.properties, this.strTableName,
-				this.htblColNameValue, this.strOperator);
+		this.page = page;
+		select = new SelectCommand(btfactory, this.reader, this.properties, this.strTableName,
+				this.htblColNameValue, this.strOperator, page);
 	}
 	
 	public void execute() throws DBEngineException {
 		select.execute();
 		this.deleteFromTable();
-		try {
-			this.deleteFromTree();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} 
+	//	try {
+			//this.deleteFromTree();
+		//} catch (IOException e) {
+			//e.printStackTrace();
+	//	} 
 	}
 	
 	public void deleteFromTable() throws DBEngineException{
 		ArrayList<String> pointers = select.getResultPointers(); 
 		for(int i =0; i<pointers.size(); i++){
-			String [] x = ((String) pointers.get(i)).split(" ");
-			int pageNumber = Integer.parseInt(x[1]);
-			int rowNumber= Integer.parseInt(x[2]);
-			reader.deleteRow(this.strTableName,pageNumber,rowNumber); 
+			//String [] x = ((String) pointers.get(i)).split(" ");
+			//int pageNumber = Integer.parseInt(x[1]);
+			int rowNumber= Integer.parseInt(pointers.get(i));
+			select.page.deleteTuples(rowNumber);
+			//reader.deleteRow(this.strTableName,pageNumber,rowNumber); 
 		}
 	}
 	

@@ -48,30 +48,27 @@ public class DBApp {
 		createIndex.execute();
 	}
 
-	public void insertIntoTable(String strTableName,
-			Hashtable<String, String> htblColNameValue)
-			throws DBEngineException {
-		InsertCommand insertCommand = new InsertCommand(this.bTreeFactory,
-				reader, strTableName, properties, htblColNameValue);
+	public void insertIntoTable(String strTableName, Hashtable<String,String> htblColNameValue)
+										throws DBEngineException {
+		InsertCommand insertCommand = new InsertCommand(this.bTreeFactory, reader, strTableName, properties, htblColNameValue, null);
 		insertCommand.execute();
-
 	}
 
 	public void deleteFromTable(String strTableName,
-			Hashtable<String, String> htblColNameValue, String strOperator)
-			throws DBEngineException {
-		DeleteCommand delete = new DeleteCommand(strTableName,
-				htblColNameValue, strOperator, reader, properties, bTreeFactory);
-		delete.execute();
-
+								Hashtable<String,String> htblColNameValue,
+								String strOperator)
+										throws DBEngineException {
+		DeleteCommand delete = new DeleteCommand(strTableName, htblColNameValue, strOperator, reader,properties,bTreeFactory, null);
+		delete.execute(); 
+	
 	}
 
-	public Iterator<Hashtable<String, String>> selectFromTable(String strTable,
-			Hashtable<String, String> htblColNameValue, String strOperator)
-			throws DBEngineException {
-		SelectCommand selectCommand = new SelectCommand(this.bTreeFactory,
-				this.reader, properties, strTable, htblColNameValue,
-				strOperator);
+	
+	public Iterator< Hashtable<String, String >> selectFromTable(String strTable,
+									Hashtable<String,String> htblColNameValue,
+									String strOperator)
+											throws DBEngineException {
+		SelectCommand selectCommand = new SelectCommand(this.bTreeFactory, this.reader,properties, strTable, htblColNameValue, strOperator, null);
 		selectCommand.execute();
 		Iterator<Hashtable<String, String>> results = selectCommand
 				.getResults().iterator();

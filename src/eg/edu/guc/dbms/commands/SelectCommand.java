@@ -7,6 +7,7 @@ import java.util.Set;
 
 import eg.edu.guc.dbms.exceptions.DBEngineException;
 import eg.edu.guc.dbms.interfaces.Command;
+import eg.edu.guc.dbms.pages.Page;
 import eg.edu.guc.dbms.utils.CSVReader;
 import eg.edu.guc.dbms.utils.Properties;
 import eg.edu.guc.dbms.utils.btrees.BTreeAdopter;
@@ -19,6 +20,7 @@ public class SelectCommand implements Command {
 	Hashtable<String, String> htblColNameValue;
 	String strOperator;
 	Properties properties;
+	Page page;
 
 	// The final arraylist of objects
 	ArrayList<Hashtable<String, String>> results;
@@ -31,13 +33,14 @@ public class SelectCommand implements Command {
 
 	public SelectCommand(BTreeFactory btfactory, CSVReader reader,
 			Properties properties, String tableName,
-			Hashtable<String, String> htblColNameValue, String strOperator) {
+			Hashtable<String, String> htblColNameValue, String strOperator,Page page) {
 		this.btfactory = btfactory;
 		this.reader = reader;
 		this.tableName = tableName;
 		this.htblColNameValue = htblColNameValue;
 		this.strOperator = strOperator;
 		this.properties = properties;
+		this.page = page;
 	}
 
 	private ArrayList<String> intersect(ArrayList<String> resultsPointer,
@@ -69,11 +72,11 @@ public class SelectCommand implements Command {
 
 	}
 
-	@Override
+	
 	public void execute() throws DBEngineException {
-		if (properties.getData().get(tableName) == null) {
+		/*if (properties.getData().get(tableName) == null) {
 			throw new DBEngineException("This table doesn't exist");
-		} else if (htblColNameValue == null && strOperator == null) {
+		} else*/ if (htblColNameValue == null && strOperator == null) {
 			selectAll();
 		} else {
 			validate();
@@ -90,13 +93,13 @@ public class SelectCommand implements Command {
 			throw new DBEngineException("Unknown Opertator");
 		}
 
-		Hashtable<String, Hashtable<String, String>> table = properties
-				.getData().get(tableName);
+		
+		Set<String>columns = page.getTuples().get(0).keySet();
 
 		Set<String> keys = this.htblColNameValue.keySet();
 
 		for (String key : keys) {
-			if (table.get(key) == null) {
+			if (!columns.contains(key)) {
 				throw new DBEngineException("Wrong Column Name");
 			}
 		}
@@ -110,37 +113,21 @@ public class SelectCommand implements Command {
 
 		for (String key : keys) {
 
-			if (properties.isIndexed(this.tableName, key)) {
 
-				BTreeAdopter tree = null;
-				try {
-					tree = btfactory.getBtree(this.tableName, key);
-
-				} catch (DBEngineException e) {
-				}
-				try {
-					partialRecords.add((ArrayList<String>) tree
-							.find(htblColNameValue.get(key)));
-				} catch (IOException e) {
-				}
-			} else {
 
 				ArrayList<String> partialRecord = new ArrayList<String>();
-				int tablePages = reader.getLastPageIndex(this.tableName);
-				for (int i = 0; i <= tablePages; i++) {
-					ArrayList<Hashtable<String, String>> res = reader.loadPage(
-							tableName, i);
+					ArrayList<Hashtable<String, String>> res = page.getTuples();
 					for (int j = 0; j < res.size(); j++) {
 						if (res.get(j) != null
 								&& res.get(j).get(key)
 										.equals(htblColNameValue.get(key))) {
-							String pointer = this.tableName + " " + i + " " + j;
+							String pointer = ""+j;
 							partialRecord.add(pointer);
 						}
 					}
-				}
+				
 				partialRecords.add(partialRecord);
-			}
+			
 		}
 
 	}
@@ -169,22 +156,20 @@ public class SelectCommand implements Command {
 		this.resultPointers = new ArrayList<String>();
 		this.results = new ArrayList<Hashtable<String, String>>();
 
-		int tablePages = reader.getLastPageIndex(this.tableName);
+	//	int tablePages = reader.getLastPageIndex(this.tableName);
 
-		for (int i = 0; i <= tablePages; i++) {
-			ArrayList<Hashtable<String, String>> res = reader.loadPage(
-					tableName, i);
+			ArrayList<Hashtable<String, String>> res = page.getTuples();
 			for (int j = 0; j < res.size(); j++) {
 				if (res.get(j) == null) { // Deleted Record
 					continue;
 				} else {
-					String pointer = this.tableName + " " + i + " " + j;
+					String pointer = ""+j;
 					resultPointers.add(pointer);
 					results.add(res.get(j));
 				}
 
 			}
-		}
+		
 
 	}
 
@@ -193,8 +178,7 @@ public class SelectCommand implements Command {
 
 		for (String result : this.resultPointers) {
 			String[] row = result.split(" ");
-			Hashtable<String, String> record = reader.loadRow(row[0],
-					Integer.parseInt(row[1]), Integer.parseInt(row[2]));
+			Hashtable<String, String> record = page.getTuples().get(Integer.parseInt(result));
 			this.results.add(record);
 		}
 	}
