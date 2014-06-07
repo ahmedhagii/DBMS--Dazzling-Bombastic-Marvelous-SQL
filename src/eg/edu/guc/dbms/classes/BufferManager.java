@@ -86,7 +86,6 @@ public class BufferManager {
 	}
 
 	public synchronized void write(PageID pageID, Page page) throws IOException {
-		System.out.println("ANA HNA");
 		reader.writePage(pageID.getTableName(), page.getTuples(),
 				"data/"+pageID.getTableName()+"_"+pageID.getTableNumber());
 	}
