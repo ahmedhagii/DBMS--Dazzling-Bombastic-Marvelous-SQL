@@ -87,38 +87,7 @@ public class BufferManager {
 	}
 
 	public synchronized void write(PageID pageID, Page page) throws IOException {
-		System.out.println("ANA HNA");
 		reader.writePage(pageID.getTableName(), page.getTuples(),
 				"data/"+pageID.getTableName()+"_"+pageID.getTableNumber());
 	}
-	public static void main (String [] args) throws IOException, DBEngineException{
-		CSVReader x = new CSVReader();
-		BufferManager y = new BufferManager(x);
-		 y.init();
-		Page H = new Page();
-		PageID J = new PageID("Employee_0");
-	//	System.out.println(y.UsedSlots.size());
-		y.read(J, H, true);
-	//	System.out.println(y.UsedSlots.size());
-		ArrayList<Hashtable<String,String>> tuples =x.loadPage("Employee",0);
-	//	String print = new String();
-	//	for(int i=0;i<tuples.size();i++){
-	//		print.concat(tuples.get(i).toString()+"\n");
-//		}
-		Scanner delay = new Scanner(System.in);
-		System.out.println(H.toString());
-		System.out.println("Enter rakam ye3atalny shwaya");
-		int asdasd = delay.nextInt();
-		J = new PageID("Department_0");
-		Page K = new Page();
-		y.read(J, K, true);
-		
-		
-		//System.out.println(tuples);
-		//H.setTuples(tuples);
-		//System.out.println(H.getTableName());
-
-		
-	}
-
 }
