@@ -116,18 +116,16 @@ public class SelectCommand implements Command {
 
 
 				ArrayList<String> partialRecord = new ArrayList<String>();
-				int tablePages = reader.getLastPageIndex(this.tableName);
-				for (int i = 0; i <= tablePages; i++) {
 					ArrayList<Hashtable<String, String>> res = page.getTuples();
 					for (int j = 0; j < res.size(); j++) {
 						if (res.get(j) != null
 								&& res.get(j).get(key)
 										.equals(htblColNameValue.get(key))) {
-							String pointer = this.tableName + " " + i + " " + j;
+							String pointer = ""+j;
 							partialRecord.add(pointer);
 						}
 					}
-				}
+				
 				partialRecords.add(partialRecord);
 			
 		}
@@ -158,21 +156,20 @@ public class SelectCommand implements Command {
 		this.resultPointers = new ArrayList<String>();
 		this.results = new ArrayList<Hashtable<String, String>>();
 
-		int tablePages = reader.getLastPageIndex(this.tableName);
+	//	int tablePages = reader.getLastPageIndex(this.tableName);
 
-		for (int i = 0; i <= tablePages; i++) {
 			ArrayList<Hashtable<String, String>> res = page.getTuples();
 			for (int j = 0; j < res.size(); j++) {
 				if (res.get(j) == null) { // Deleted Record
 					continue;
 				} else {
-					String pointer = this.tableName + " " + i + " " + j;
+					String pointer = ""+j;
 					resultPointers.add(pointer);
 					results.add(res.get(j));
 				}
 
 			}
-		}
+		
 
 	}
 
@@ -181,8 +178,7 @@ public class SelectCommand implements Command {
 
 		for (String result : this.resultPointers) {
 			String[] row = result.split(" ");
-			Hashtable<String, String> record = reader.loadRow(row[0],
-					Integer.parseInt(row[1]), Integer.parseInt(row[2]));
+			Hashtable<String, String> record = page.getTuples().get(Integer.parseInt(result));
 			this.results.add(record);
 		}
 	}
