@@ -2,6 +2,7 @@ package eg.edu.guc.dbms.classes;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -27,11 +28,13 @@ public class LogManager {
 
 	public synchronized void flushLog() {
 		try {
-			FileWriter writer = new FileWriter(logCSV, true);
+			PrintWriter writer = new PrintWriter(new FileWriter(logCSV));
 			for (int i = 0; i < log.size(); i++) {
-				writer.append(log.get(i));
+				writer.println(log.get(i));
 			}
+			writer.flush();
 			writer.close();
+			log = new ArrayList<String>();
 		} catch (IOException e) {
 			System.out.println("EXCEPTION");
 			e.printStackTrace();
@@ -46,7 +49,7 @@ public class LogManager {
 
 	public synchronized void recordUpdate(String strTransID, PageID page,
 			String strKeyValue, String strColName, Object objOld, Object objNew) {
-		String line = "<" + strTransID + ", " + page.getPageID() + "_"
+		String line = "<Update, " + strTransID + ", " + page.getPageID() + ", "
 				+ strKeyValue + ", " + strColName + ", " + objOld.toString()
 				+ ", " + objNew.toString() + ">";
 		log.add(line);
@@ -63,7 +66,7 @@ public class LogManager {
 		for (int j = 0; j < ValuesArray.length; j++) {
 			values += "(" + keysArray[j] + ":" + ValuesArray[j] + "), ";
 		}
-		String line = "<Insert, " + strTransID + ", " + page.toString() + ", "
+		String line = "<Insert, " + strTransID + ", " + page.getPageID() + ", "
 				+ values + ">";
 		log.add(line);
 	}
@@ -79,7 +82,7 @@ public class LogManager {
 		for (int j = 0; j < ValuesArray.length; j++) {
 			values += "(" + keysArray[j] + ":" + ValuesArray[j] + "), ";
 		}
-		String line = "<delete, " + strTransID + ", " + page.toString() + "_"
+		String line = "<delete, " + strTransID + ", " + page.getPageID() + "_"
 				+ strKeyValue + ", " + values + ">";
 		log.add(line);
 	}
