@@ -74,6 +74,40 @@ public class InsertCommand implements Command {
 			}
 			
 			page.insertTuple(htblColNameValue);
+			int lastPage = reader.getLastPageIndex(tableName);
+			int lastRow = reader.getLastRow(tableName, lastPage);
+
+			if(lastRow+1 == properties.getMaximumPageSize()) {
+				lastPage++;
+				reader.createTablePage(tableName, lastPage,Utils.setToArray(properties.getData().get(this.tableName).keySet()));		
+			}	
+			int row = reader.appendToTable(tableName, lastPage, htblColNameValue);
+			ArrayList<String> indexedColumns = properties.getIndexedColumns(tableName);
+
+			for (String column : indexedColumns) {
+				String pointer = tableName + " " + lastPage;
+				tree = btFactory.getBtree(tableName, column);
+				try {
+					tree.insert(htblColNameValue.get(column), pointer);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}			
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 		}
 		
 }
