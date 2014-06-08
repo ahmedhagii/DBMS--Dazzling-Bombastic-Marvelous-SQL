@@ -1,12 +1,7 @@
 package eg.edu.guc.dbms.classes;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Scanner;
-
 import eg.edu.guc.dbms.exceptions.DBEngineException;
 import eg.edu.guc.dbms.pages.Page;
 import eg.edu.guc.dbms.pages.PageID;

@@ -34,6 +34,7 @@ public class LogManager {
 			}
 			writer.flush();
 			writer.close();
+			log = new ArrayList<String>();
 		} catch (IOException e) {
 			System.out.println("EXCEPTION");
 			e.printStackTrace();
