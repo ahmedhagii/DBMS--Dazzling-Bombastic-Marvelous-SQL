@@ -17,6 +17,38 @@ public class TupleUpdate extends Step {
 	private String  strTableName;
 	private Hashtable<String,String> htblColNameValue;
 	private String strOperator;
+	public String getStrTableName() {
+		return strTableName;
+	}
+
+	public void setStrTableName(String strTableName) {
+		this.strTableName = strTableName;
+	}
+
+	public Hashtable<String, String> getHtblColNameValue() {
+		return htblColNameValue;
+	}
+
+	public void setHtblColNameValue(Hashtable<String, String> htblColNameValue) {
+		this.htblColNameValue = htblColNameValue;
+	}
+
+	public String getStrOperator() {
+		return strOperator;
+	}
+
+	public void setStrOperator(String strOperator) {
+		this.strOperator = strOperator;
+	}
+
+	public Hashtable<String, String> getHtblNewValues() {
+		return htblNewValues;
+	}
+
+	public void setHtblNewValues(Hashtable<String, String> htblNewValues) {
+		this.htblNewValues = htblNewValues;
+	}
+
 	private CSVReader reader;
 	private Properties properties;
 	private BTreeFactory btfactory;
