@@ -61,7 +61,7 @@ public class RecoveryManager {
 		return elnoo3;
 		
 	}
-	public void redo(String step) throws IOException, DBEngineException{
+	public void undo(String step) throws IOException, DBEngineException{
 	String[] split = step.split(", ");
 		if(split[0].equals("Insert")){
 		String pageid = split[2];
@@ -83,7 +83,7 @@ public class RecoveryManager {
 		
 	}
 	
-	public void undo (String line){
+	public void redo (String line){
 		
 	}
 	
