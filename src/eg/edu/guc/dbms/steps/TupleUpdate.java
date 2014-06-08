@@ -8,6 +8,7 @@ import eg.edu.guc.dbms.commands.InsertCommand;
 import eg.edu.guc.dbms.commands.SelectCommand;
 import eg.edu.guc.dbms.exceptions.DBEngineException;
 import eg.edu.guc.dbms.pages.Page;
+import eg.edu.guc.dbms.parser.TransactionGenerator;
 import eg.edu.guc.dbms.utils.CSVReader;
 import eg.edu.guc.dbms.utils.Properties;
 import eg.edu.guc.dbms.utils.btrees.BTreeFactory;
@@ -19,13 +20,12 @@ public class TupleUpdate extends Step {
 	private CSVReader reader;
 	private Properties properties;
 	private BTreeFactory btfactory;
-	private Page page;
 	private Hashtable<String, String> htblNewValues;
 	
 	public TupleUpdate(String strTableName,
-			Hashtable<String, String> htblColNameValue, String strOperator,
-			CSVReader reader, Properties properties, BTreeFactory btfactory,
-			Page page, Hashtable<String,String> htblNewValues) {
+			Hashtable<String, String> htblColNameValue,
+			Hashtable<String,String> htblNewValuesString, String strOperator,
+			CSVReader reader, Properties properties, BTreeFactory btfactory) {
 		super();
 		this.strTableName = strTableName;
 		this.htblColNameValue = htblColNameValue;
@@ -34,10 +34,9 @@ public class TupleUpdate extends Step {
 		this.reader = reader;
 		this.properties = properties;
 		this.btfactory = btfactory;
-		this.page = page;
 	}
 
-	public TupleUpdate() {
+	public void execute(Page page) {
 		SelectCommand select = new SelectCommand(btfactory, reader, properties, strOperator, htblColNameValue, strOperator, page);
 		try {
 			select.execute();

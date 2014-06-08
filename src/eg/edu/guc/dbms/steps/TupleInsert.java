@@ -11,7 +11,7 @@ import eg.edu.guc.dbms.utils.btrees.BTreeFactory;
 
 public class TupleInsert extends Step {
 
-	public TupleInsert(BTreeFactory btFactory , CSVReader reader,String tableName, Properties properties, Hashtable<String,String> htblColNameValue,Page page) 
+	public TupleInsert(BTreeFactory btFactory, CSVReader reader, Properties properties, String tableName, Hashtable<String,String> htblColNameValue) 
 	{	
 		super();
 		this.btFactory = btFactory;
@@ -19,7 +19,6 @@ public class TupleInsert extends Step {
 		this.tableName = tableName;
 		this.properties = properties;
 		this.htblColNameValue = htblColNameValue;
-		this.page = page;
 		
 		// TODO Auto-generated constructor stub
 	}
@@ -28,12 +27,11 @@ public class TupleInsert extends Step {
 	private String tableName;
 	private Properties properties;
 	private Hashtable<String,String>htblColNameValue;
-	private Page page;
 	
 	
 
-	@Override
-	public void execute() {
+
+	public void execute(Page page) {
 		// TODO Auto-generated method stub
 	InsertCommand command =	new InsertCommand(btFactory, reader, tableName, properties, htblColNameValue, page);
 		try {
@@ -42,6 +40,15 @@ public class TupleInsert extends Step {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	}
+
+
+
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
 		
 	}
 

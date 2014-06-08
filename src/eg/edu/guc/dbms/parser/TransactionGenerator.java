@@ -7,22 +7,30 @@ import eg.edu.guc.dbms.classes.Transaction;
 import eg.edu.guc.dbms.steps.Commit;
 import eg.edu.guc.dbms.steps.PageRead;
 import eg.edu.guc.dbms.steps.PageWrite;
+import eg.edu.guc.dbms.steps.Select;
 import eg.edu.guc.dbms.steps.Step;
 import eg.edu.guc.dbms.steps.TupleDelete;
 import eg.edu.guc.dbms.steps.TupleInsert;
+import eg.edu.guc.dbms.steps.TupleUpdate;
 
-public class TransactionGenerator {
+public abstract class TransactionGenerator {
 
-	public TransactionGenerator() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public Transaction getTransaction(Object[] objects, int type) {
-		Transaction newTransaction = new Transaction(null, null);
+	public static Transaction getTransaction(Object[] objects, int type) {
+		Vector<Step> vector = new Vector<Step>();
+		switch(type) {
+			case 0: vector = getCreateTableSteps(objects); break;
+			case 1: vector = getCreateIndexSteps(objects); break;
+			case 2: vector = getInsertSteps(objects); break;
+			case 3: vector = getDeleteSteps(objects); break;
+			case 4: vector = getUpdateSteps(objects); break;
+			case 5: vector = getSelectSteps(objects); break;
+		}
+		Transaction newTransaction = new Transaction();
+		newTransaction.init(null, null, vector);
 		return newTransaction;
 	}
 
-	private Vector<Step> getDeleteSteps(Object[] objects) {
+	private static Vector<Step> getDeleteSteps(Object[] objects) {
 		String tableName = (String)objects[0];
 		String strOperator = (String)objects[1];
 		Hashtable<String, String> htblColNameValue = (Hashtable<String, String>)objects[2]; 
@@ -41,13 +49,13 @@ public class TransactionGenerator {
 		return vector;
 	}
 
-	private Vector<Step> getInsertSteps(Object[] objects) {
+	private static Vector<Step> getInsertSteps(Object[] objects) {
 		String tableName = (String)objects[0];
 		Hashtable<String, String> htblColNameValue = (Hashtable<String, String>)objects[1]; 
 		Vector<Step> vector = new Vector<Step>();
 		
 		PageRead pageRead = new PageRead();
-		TupleInsert tupleInsert = new TupleInsert(null, null, tableName, null, htblColNameValue, null);
+		TupleInsert tupleInsert = new TupleInsert(null, null, null, tableName, htblColNameValue);
 		Commit commit = new Commit();
 		PageWrite pageWrite = new PageWrite();
 		
@@ -59,61 +67,48 @@ public class TransactionGenerator {
 		return vector;
 	}
 
-	private Vector<Step> getCreateTableSteps(Object[] objects) {
+	private static Vector<Step> getCreateTableSteps(Object[] objects) {
 		//TODO
+		return null;
 	}
 
-	private Vector<Step> getSelectSteps(Object[] objects) {
+	private static Vector<Step> getSelectSteps(Object[] objects) {
 		String tableName = (String)objects[0];
 		String strOperator = (String)objects[1];
 		Hashtable<String, String> htblColNameValue = (Hashtable<String, String>)objects[2]; 
 		Vector<Step> vector = new Vector<Step>();
 		
 		PageRead pageRead = new PageRead();
-		TupleDelete tupleDelete = new TupleDelete(tableName, htblColNameValue, strOperator, null, null, null);
+		Select select = new Select(null, null, null, tableName, htblColNameValue, strOperator);
 		Commit commit = new Commit();
-		PageWrite pageWrite = new PageWrite();
 		
 		vector.add(pageRead);
-		vector.add(tupleDelete);
+		vector.add(select);
 		vector.add(commit);
-		vector.add(pageWrite);
 		
 		return vector;
 	}
 
-	private Vector<Step> getCreateIndexSteps(Object[] objects) {
-		String tableName = (String)objects[0];
-		String strOperator = (String)objects[1];
-		Hashtable<String, String> htblColNameValue = (Hashtable<String, String>)objects[2]; 
-		Vector<Step> vector = new Vector<Step>();
-		
-		PageRead pageRead = new PageRead();
-		TupleDelete tupleDelete = new TupleDelete(tableName, htblColNameValue, strOperator, null, null, null);
-		Commit commit = new Commit();
-		PageWrite pageWrite = new PageWrite();
-		
-		vector.add(pageRead);
-		vector.add(tupleDelete);
-		vector.add(commit);
-		vector.add(pageWrite);
-		
-		return vector;
+	private static Vector<Step> getCreateIndexSteps(Object[] objects) {
+		//TODO
+		return null;
 	}
 
-	private Vector<Step> getUpdateSteps(Object[] objects) {
+	private static Vector<Step> getUpdateSteps(Object[] objects) {
+
 		String tableName = (String)objects[0];
 		String strOperator = (String)objects[1];
-		Hashtable<String, String> htblColNameValue = (Hashtable<String, String>)objects[2]; 
+		Hashtable<String, String> htblColNameValueCondition = (Hashtable<String, String>)objects[3];
+		Hashtable<String, String> htblColNameValue = (Hashtable<String, String>)objects[4]; 
 		Vector<Step> vector = new Vector<Step>();
 		
 		PageRead pageRead = new PageRead();
-		TupleDelete tupleDelete = new TupleDelete(tableName, htblColNameValue, strOperator, null, null, null);
+		TupleUpdate tupleUpdate = new TupleUpdate(tableName, htblColNameValue, htblColNameValueCondition, strOperator, null, null, null);
 		Commit commit = new Commit();
 		PageWrite pageWrite = new PageWrite();
 		
 		vector.add(pageRead);
-		vector.add(tupleDelete);
+		vector.add(tupleUpdate);
 		vector.add(commit);
 		vector.add(pageWrite);
 		

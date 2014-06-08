@@ -138,7 +138,7 @@ public class CSVReader implements CSVReaderInterface{
 		 for(int j = 0 ; j<split.length;j++){
 			 oneTuple += tuples.get(i).get(split[j]);
 		 
-		 if(j < split.length){
+		 if(j < split.length-1){
 			 oneTuple += ",";
 		 	}
 		 }
