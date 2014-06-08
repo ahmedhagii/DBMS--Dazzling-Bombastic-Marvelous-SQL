@@ -1,5 +1,6 @@
 package eg.edu.guc.dbms.classes;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 
@@ -28,10 +29,16 @@ public class TransactionManager {
 
 	// methods
 
+	ArrayList<Transaction> transactions;
+	
 	public void init() {
 
 	}
-
+	
+	public void addTransaction(Transaction transaction) {
+		transactions.add(transaction);
+	}
+	
 	public void createTable(String strTableName,
 			Hashtable<String, String> htblColNameType,
 			Hashtable<String, String> htblColNameRefs, String strKeyColName)

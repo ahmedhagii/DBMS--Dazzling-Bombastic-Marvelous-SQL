@@ -20,10 +20,6 @@ public class TupleDelete extends Step {
 	private Properties properties;
 	private BTreeFactory btfactory;
 	
-	
-	
-	
-	
 	public TupleDelete(String strTableName, Hashtable<String,String>htblColNameValue,String strOperator, CSVReader reader, Properties properties,
 			BTreeFactory btfactory) {
 		this.strTableName = strTableName;
@@ -45,7 +41,6 @@ public class TupleDelete extends Step {
 		}
 	}
 
-	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
 		
