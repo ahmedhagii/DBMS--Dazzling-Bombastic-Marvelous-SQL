@@ -41,7 +41,7 @@ public class Transaction implements Runnable {
 		this.type = type;
 		
 	}
-
+Page page;
 	
 	public void run() {
 		// TODO Auto-generated method stub
@@ -51,7 +51,13 @@ public class Transaction implements Runnable {
 		Page page = null;
 		Boolean bModify =type.equals("write")? true:false;
 		try {
-			bufManager.read(pgid, page, bModify);
+		 bufManager.read(pgid, page, bModify);
+			for(int i = 1 ; i <vSteps.size()-2;i++){
+				vSteps.get(i).execute(page);
+			
+			}
+			
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

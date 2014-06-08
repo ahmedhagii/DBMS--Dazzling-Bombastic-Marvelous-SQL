@@ -59,7 +59,17 @@ public class BufferManager {
 	public  BufferManager(CSVReader reader){
 		this.reader = reader;
 	}
-
+	
+	
+	
+	public Page getPage(PageID pageID){
+		return UsedSlots.get(pageID);
+	}
+	
+	
+	
+	
+	
 
 	public synchronized void read(PageID pageID, Page page, boolean bModify) throws DBEngineException, IOException {
 		

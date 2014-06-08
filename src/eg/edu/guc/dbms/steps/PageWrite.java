@@ -26,5 +26,11 @@ public class PageWrite extends Step {
 	public PageWrite(BufferManager bm) {
 		super();
 		this.bm = bm;
+	}
+
+	@Override
+	public void execute(Page page) {
+		// TODO Auto-generated method stub
+		
 	}	
 }

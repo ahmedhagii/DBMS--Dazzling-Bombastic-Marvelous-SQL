@@ -24,7 +24,7 @@ public class TupleUpdate extends Step {
 	
 	public TupleUpdate(String strTableName,
 			Hashtable<String, String> htblColNameValue,
-			Hashtable<String,String> htblNewValuesString, String strOperator,
+			Hashtable<String,String> htblNewValues, String strOperator,
 			CSVReader reader, Properties properties, BTreeFactory btfactory) {
 		super();
 		this.strTableName = strTableName;

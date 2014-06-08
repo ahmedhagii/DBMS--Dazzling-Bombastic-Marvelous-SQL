@@ -26,7 +26,7 @@ public abstract class TransactionGenerator {
 			case 5: vector = getSelectSteps(objects); break;
 		}
 		Transaction newTransaction = new Transaction();
-		newTransaction.init(null, null, vector);
+		newTransaction.init(null, null, vector, null);
 		return newTransaction;
 	}
 
@@ -37,9 +37,9 @@ public abstract class TransactionGenerator {
 		Vector<Step> vector = new Vector<Step>();
 		
 		PageRead pageRead = new PageRead();
-		TupleDelete tupleDelete = new TupleDelete(tableName, htblColNameValue, strOperator, null, null, null);
+		TupleDelete tupleDelete = new TupleDelete(tableName, htblColNameValue, strOperator, null, null, null); //mo3addal le tadamon el arguments
 		Commit commit = new Commit();
-		PageWrite pageWrite = new PageWrite();
+		PageWrite pageWrite = new PageWrite(null);//mo3addal le tadamon el arguments
 		
 		vector.add(pageRead);
 		vector.add(tupleDelete);
@@ -57,7 +57,7 @@ public abstract class TransactionGenerator {
 		PageRead pageRead = new PageRead();
 		TupleInsert tupleInsert = new TupleInsert(null, null, null, tableName, htblColNameValue);
 		Commit commit = new Commit();
-		PageWrite pageWrite = new PageWrite();
+		PageWrite pageWrite = new PageWrite(null);//same here
 		
 		vector.add(pageRead);
 		vector.add(tupleInsert);
@@ -105,7 +105,7 @@ public abstract class TransactionGenerator {
 		PageRead pageRead = new PageRead();
 		TupleUpdate tupleUpdate = new TupleUpdate(tableName, htblColNameValue, htblColNameValueCondition, strOperator, null, null, null);
 		Commit commit = new Commit();
-		PageWrite pageWrite = new PageWrite();
+		PageWrite pageWrite = new PageWrite(null); // ghayaaar
 		
 		vector.add(pageRead);
 		vector.add(tupleUpdate);
