@@ -11,18 +11,24 @@ import eg.edu.guc.dbms.utils.btrees.BTreeFactory;
 
 public class TupleInsert extends Step {
 
+	private BTreeFactory btFactory;
+	private CSVReader reader;
+	private String tableName;
+	private Properties properties;
+	private Hashtable<String, String> htblColNameValue;
+	
 	public TupleInsert(BTreeFactory btFactory, CSVReader reader,
 			Properties properties, String tableName,
 			Hashtable<String, String> htblColNameValue) {
-		super();
+		super(tableName, htblColNameValue);
 		this.btFactory = btFactory;
 		this.reader = reader;
 		this.tableName = tableName;
 		this.properties = properties;
 		this.htblColNameValue = htblColNameValue;
-
 		// TODO Auto-generated constructor stub
 	}
+
 
 	public Hashtable<String, String> getHtblColNameValue() {
 		return htblColNameValue;
@@ -32,11 +38,6 @@ public class TupleInsert extends Step {
 		this.htblColNameValue = htblColNameValue;
 	}
 
-	private BTreeFactory btFactory;
-	private CSVReader reader;
-	private String tableName;
-	private Properties properties;
-	private Hashtable<String, String> htblColNameValue;
 
 	public void execute(Page page) {
 		// TODO Auto-generated method stub

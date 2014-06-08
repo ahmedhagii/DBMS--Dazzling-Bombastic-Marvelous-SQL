@@ -9,7 +9,7 @@ import eg.edu.guc.dbms.pages.Page;
 import eg.edu.guc.dbms.pages.PageID;
 import eg.edu.guc.dbms.utils.CSVReader;
 
-public class BufferManager {
+public class BufferManager implements Runnable {
 
 	// BufferManager manages the reading and writing of pages from
 	// disk. It maintains two lists: list of empty slots, and list of
@@ -43,6 +43,10 @@ public class BufferManager {
 	HashMap<PageID,Boolean> modified ;
 	CSVReader reader;
 	
+	public  BufferManager(CSVReader reader){
+		this.reader = reader;
+	}
+	
 	// methods
 	public void init() {
 		this.UsedSlots = new HashMap<PageID,Page>();
@@ -53,16 +57,10 @@ public class BufferManager {
 		this.EmptySlots = MaximumUsedBufferSlots;
 	}
 	
-	public  BufferManager(CSVReader reader){
-		this.reader = reader;
-	}
-	
-	
-	
 	public Page getPage(PageID pageID){
 		return UsedSlots.get(pageID);
 	}
-	
+
 	public synchronized void flush() throws IOException{
 		Iterator<PageID> x = UsedSlots.keySet().iterator();
 		while(x.hasNext()){
@@ -75,13 +73,8 @@ public class BufferManager {
 		}
 		this.init();
 	}
-	
-	
-	
-	
 
-	public synchronized void read(PageID pageID, Page page, boolean bModify) throws DBEngineException, IOException {
-		
+	public synchronized void read(PageID pageID, Page page, boolean bModify) throws DBEngineException, IOException {		
 		if (UsedSlots.containsKey(pageID)){
 			page = new Page ();
 //			UsedSlots.get(pageID).setPinCount(UsedSlots.get(pageID).getPinCount()+1);
@@ -108,5 +101,11 @@ public class BufferManager {
 	public synchronized void write(PageID pageID, Page page) throws IOException {
 		reader.writePage(pageID.getTableName(), page.getTuples(),
 				"data/"+pageID.getTableName()+"_"+pageID.getTableNumber());
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		init();
 	}
 }

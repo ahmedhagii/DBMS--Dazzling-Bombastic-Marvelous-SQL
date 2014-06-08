@@ -135,6 +135,11 @@ public class CSVReader implements CSVReaderInterface{
 		for(int i=0;i<tuples.size();i++){
 		//String oneTuple = pageName+",";
 			String oneTuple = "";
+			if(tuples.get(i) == null) {
+				writer.println("### Mat, hona yrkod tuple mamsoo7 ###");
+				continue;
+			}
+				
 		 for(int j = 0 ; j<split.length;j++){
 			 oneTuple += tuples.get(i).get(split[j]);
 		 

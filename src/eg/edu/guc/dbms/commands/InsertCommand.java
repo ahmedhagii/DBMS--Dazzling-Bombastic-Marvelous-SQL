@@ -45,6 +45,7 @@ public class InsertCommand implements Command {
 			for (String column : columns) {
 				//if(properties.getData().get(tableName).get(column) == null)
 					//throw new DBEngineException("Column name is wrong or it doesn't exist.");
+				System.out.println(tableName + " " + column + " ana zhe2t");
 				if(properties.isPrimaryKey(tableName, column)) {
 					if(htblColNameValue.get(column) == null)
 						throw new DBEngineException("The primary key can't be null.");

@@ -21,12 +21,13 @@ public class SQLParser {
 	}
 
 	public void SQLParser(String sql) throws DBEngineException {
-		sql = sql.toLowerCase();
+//		sql = sql.toLowerCase();
 		Object[] obj;
 		Transaction newTransaction;
 
 		if (sql.contains("insert")) {
 			obj = insertParser(sql);
+			System.out.println((String)obj[0]);
 			newTransaction = TransactionGenerator.getTransaction(obj, 2);
 		} else if (sql.contains("delete")) {
 			obj = deleteParser(sql);
@@ -140,9 +141,10 @@ public class SQLParser {
 
 	private Object[] insertParser(String sql) throws DBEngineException {
 		String into = sql.substring(sql.indexOf("into"), sql.indexOf("values"));
+		String table = into.substring(into.indexOf("into") + 4, into.indexOf("("));
 		String values = sql.substring(sql.indexOf("values"));
 
-		String tableName = getTableName(into);
+		String tableName = getTableName(table);
 		Hashtable<String, String> htblColNameValue = insertHashtableGen(into,
 				values);
 
@@ -156,7 +158,7 @@ public class SQLParser {
 				sql.indexOf("from"));
 		String from = sql.substring(sql.indexOf("from"), sql.indexOf("where"));
 		String where = sql.substring(sql.indexOf("where"));
-
+		
 		String tableName = getTableName(from);
 		String strOperator = getOp(where);
 		Hashtable<String, String> htblColNameValue = whereHashtableGen(where,
@@ -204,6 +206,7 @@ public class SQLParser {
 
 	private Hashtable<String, String> whereHashtableGen(String where,
 			String strOp) throws DBEngineException {
+		where = where.substring(5).trim();
 		String[] cond = where.split(strOp);
 		Hashtable<String, String> table = new Hashtable<String, String>();
 
@@ -230,10 +233,10 @@ public class SQLParser {
 
 		Hashtable<String, String> table = new Hashtable<String, String>();
 
-		cols = cols.substring(cols.indexOf("(") + 1, cols.indexOf(")"));
+		cols = cols.substring(cols.indexOf("(") + 1, cols.indexOf(")")).trim();
 		String[] colNames = cols.split("\\s*,\\s*");
 
-		values = values.substring(values.indexOf("(") + 1, values.indexOf(")"));
+		values = values.substring(values.indexOf("(") + 1, values.indexOf(")")).trim();
 		String[] actualValues = values.split("\\s*,\\s*");
 
 		for (int i = 0; i < actualValues.length; i++)
@@ -256,8 +259,8 @@ public class SQLParser {
 
 	private String getOp(String where) {
 		if (where.contains("or"))
-			return "or";
-		return "and";
+			return "OR";
+		return "AND";
 	}
 
 	public static void main(String args[]) throws DBEngineException {

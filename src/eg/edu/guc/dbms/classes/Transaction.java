@@ -1,6 +1,8 @@
 package eg.edu.guc.dbms.classes;
 
 import java.io.IOException;
+
+import java.util.Hashtable;
 import java.sql.Time;
 import java.util.Vector;
 
@@ -9,6 +11,7 @@ import eg.edu.guc.dbms.pages.Page;
 import eg.edu.guc.dbms.pages.PageID;
 import eg.edu.guc.dbms.steps.Commit;
 import eg.edu.guc.dbms.steps.PageRead;
+import eg.edu.guc.dbms.steps.PageWrite;
 import eg.edu.guc.dbms.steps.Step;
 import eg.edu.guc.dbms.steps.TupleDelete;
 import eg.edu.guc.dbms.steps.TupleInsert;
@@ -35,11 +38,11 @@ public class Transaction implements Runnable {
 	private LogManager logManager;
 	private Vector<Step> vSteps;
 	private String type;
+	Page page;
 	private String strTransID;
 
 	public void init(BufferManager bufManager, LogManager logManager,
 			Vector<Step> vSteps, String type) {
-
 		this.bufManager = bufManager;
 		this.logManager = logManager;
 		this.vSteps = vSteps;
@@ -48,9 +51,7 @@ public class Transaction implements Runnable {
 				+ ((int) Math.random() * 10000000);
 
 	}
-
-	Page page;
-
+	
 	public void run() {
 		// TODO Auto-generated method stub
 		logManager.recordStart(strTransID);
@@ -96,9 +97,7 @@ public class Transaction implements Runnable {
 
 					}
 					vSteps.get(i).execute(page);
-
 				}
-
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -106,8 +105,9 @@ public class Transaction implements Runnable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			vSteps.get(1).execute(page);
 		}
-
+		
 	}
 
 }

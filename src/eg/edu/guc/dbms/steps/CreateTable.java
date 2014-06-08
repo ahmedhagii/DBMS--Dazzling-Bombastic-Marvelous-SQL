@@ -11,6 +11,7 @@ public class CreateTable extends Step {
 
 	public CreateTable(String strTableName, Hashtable<String,String>htblColNameValue,String strOperator, CSVReader reader, Properties properties,
 			BTreeFactory btfactory) {
+		super(strTableName, htblColNameValue);
 		// TODO Auto-generated constructor stub
 	}
 
