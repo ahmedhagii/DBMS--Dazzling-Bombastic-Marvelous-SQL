@@ -9,17 +9,22 @@ import eg.edu.guc.dbms.pages.PageID;
 
 public class PageWrite extends Step {
 
-	public PageWrite() {
-		// TODO Auto-generated constructor stub
-	}
+ 	private BufferManager bm ;
+ 	private PageID pageID;
+ 	private Page page;
 
-	public void execute(BufferManager bufferManager, PageID pageID, Page page) throws DBEngineException{
+	public void execute(PageID pageID, Page page) throws DBEngineException {
+		this.pageID = pageID;
+		this.page = page;
 		try {
-			bufferManager.write(pageID, page);
+			bm.write(pageID, page);
 		} catch (IOException e) {
 			throw new DBEngineException("There was a problem writing the page!");
-			//e.printStackTrace();
 		}
 	}
-	
+
+	public PageWrite(BufferManager bm) {
+		super();
+		this.bm = bm;
+	}	
 }
