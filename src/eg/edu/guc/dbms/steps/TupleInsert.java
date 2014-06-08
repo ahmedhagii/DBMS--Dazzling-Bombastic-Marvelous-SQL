@@ -11,7 +11,7 @@ import eg.edu.guc.dbms.utils.btrees.BTreeFactory;
 
 public class TupleInsert extends Step {
 
-	public TupleInsert(BTreeFactory btFactory , CSVReader reader,String tableName, Properties properties, Hashtable<String,String> htblColNameValue) 
+	public TupleInsert(BTreeFactory btFactory, CSVReader reader, Properties properties, String tableName, Hashtable<String,String> htblColNameValue) 
 	{	
 		super();
 		this.btFactory = btFactory;

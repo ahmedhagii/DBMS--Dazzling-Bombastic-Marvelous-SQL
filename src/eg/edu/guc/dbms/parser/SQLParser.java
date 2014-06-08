@@ -5,18 +5,41 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import eg.edu.guc.dbms.classes.Transaction;
 import eg.edu.guc.dbms.exceptions.DBEngineException;
 import eg.edu.guc.dbms.utils.TypesConstants;
 
 
 public class SQLParser {
 
-	public static void SQLParser(String sql) {
+	public void SQLParser(String sql) throws DBEngineException {
 		sql = sql.toLowerCase();
-		// System.out.println(select + "\n" + from + "\n" + where);
+		Object[] obj;
+		Transaction newTransaction;
+		
+		if(sql.contains("insert")) {
+			obj = insertParser(sql);
+			newTransaction = TransactionGenerator.getTransaction(obj, 2);
+		}else if(sql.contains("delete")) { 
+			obj = deleteParser(sql);
+			newTransaction = TransactionGenerator.getTransaction(obj, 3);
+		}else if(sql.contains("update")) {
+			obj = updateParser(sql);
+			newTransaction = TransactionGenerator.getTransaction(obj, 4);
+		}else if(sql.contains("select"))  {
+			obj = selectParser(sql);
+			newTransaction = TransactionGenerator.getTransaction(obj, 5);
+		}else if(sql.contains("create table"))  {
+			obj = createTableParser(sql);
+			newTransaction = TransactionGenerator.getTransaction(obj, 0);
+		}else {
+			obj = createIndexParser(sql);
+			newTransaction = TransactionGenerator.getTransaction(obj, 1);
+		}
 	}
 	
-	public Object[] createTableParser(String sql) throws DBEngineException {
+	private Object[] createTableParser(String sql) throws DBEngineException {
+		//TODO references
 		String create = sql.substring(sql.indexOf("table"), sql.indexOf("(")).trim();
 		String attr = sql.substring(sql.indexOf("(") + 1, sql.indexOf(";")-1).trim();
 		
@@ -30,7 +53,12 @@ public class SQLParser {
 		return ret;
 	}
 	
-	public Object[] deleteParser(String sql) throws DBEngineException {
+	private Object[] createIndexParser(String sql) throws DBEngineException {
+		//TODO
+		return null;
+	}
+	
+	private Object[] deleteParser(String sql) throws DBEngineException {
 		String delete = sql.substring(sql.indexOf("from"), sql.indexOf("where")).trim();
 		String where = sql.substring(sql.indexOf("where") + 5).trim();
 
@@ -42,7 +70,7 @@ public class SQLParser {
 		return ret;
 	}
 	
-	public Object[] updateParser(String sql) throws DBEngineException {
+	private Object[] updateParser(String sql) throws DBEngineException {
 		String update = sql.substring(sql.indexOf("update"), sql.indexOf("set")).trim();
 		String set = sql.substring(sql.indexOf("set") + 3, sql.indexOf("where")).trim();
 		String where = sql.substring(sql.indexOf("where") + 5).trim();
@@ -56,7 +84,7 @@ public class SQLParser {
 		return ret;
 	}
 	
-	public Object[] insertParser(String sql) throws DBEngineException {
+	private Object[] insertParser(String sql) throws DBEngineException {
 		String into = sql.substring(sql.indexOf("into"), sql.indexOf("values"));
 		String values = sql.substring(sql.indexOf("values"));
 
@@ -67,7 +95,7 @@ public class SQLParser {
 		return ret;
 	}
 
-	public Object[] selectParser(String sql) throws DBEngineException {
+	private Object[] selectParser(String sql) throws DBEngineException {
 		//TODO projection
 		String select = sql.substring(sql.indexOf("select"),sql.indexOf("from"));
 		String from = sql.substring(sql.indexOf("from"), sql.indexOf("where"));
