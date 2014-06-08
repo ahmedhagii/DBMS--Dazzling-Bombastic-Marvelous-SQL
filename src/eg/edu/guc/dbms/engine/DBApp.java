@@ -2,6 +2,7 @@ package eg.edu.guc.dbms.engine;
 
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Timer;
 
 import eg.edu.guc.dbms.classes.BufferManager;
 import eg.edu.guc.dbms.classes.LogManager;
@@ -16,6 +17,7 @@ import eg.edu.guc.dbms.exceptions.DBEngineException;
 import eg.edu.guc.dbms.parser.SQLParser;
 import eg.edu.guc.dbms.parser.TransactionGenerator;
 import eg.edu.guc.dbms.utils.CSVReader;
+import eg.edu.guc.dbms.utils.FlushTimer;
 import eg.edu.guc.dbms.utils.Properties;
 import eg.edu.guc.dbms.utils.btrees.BTreeFactory;
 
@@ -45,6 +47,10 @@ public class DBApp {
 		this.tm = new TransactionManager();
 		this.lm = new LogManager();
 		this.rm = new RecoveryManager();
+		Timer timer = new  Timer(true);
+		FlushTimer timerTask = new FlushTimer(bm);
+		timer.scheduleAtFixedRate(timerTask, 0, 1200);
+		
 		this.sqlParser = new SQLParser(tm);
 		
 		TransactionGenerator.prop = properties;
