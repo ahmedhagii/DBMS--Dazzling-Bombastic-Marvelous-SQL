@@ -49,7 +49,7 @@ public class LogManager {
 
 	public synchronized void recordUpdate(String strTransID, PageID page,
 			String strKeyValue, String strColName, Object objOld, Object objNew) {
-		String line = "<Update, " + strTransID + ", " + page.getPageID() + "_"
+		String line = "<Update, " + strTransID + ", " + page.getPageID() + ", "
 				+ strKeyValue + ", " + strColName + ", " + objOld.toString()
 				+ ", " + objNew.toString() + ">";
 		log.add(line);
