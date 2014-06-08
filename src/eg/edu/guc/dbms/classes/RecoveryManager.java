@@ -15,6 +15,7 @@ import eg.edu.guc.dbms.exceptions.DBEngineException;
 import eg.edu.guc.dbms.pages.Page;
 import eg.edu.guc.dbms.pages.PageID;
 import eg.edu.guc.dbms.steps.TupleDelete;
+import eg.edu.guc.dbms.steps.TupleInsert;
 import eg.edu.guc.dbms.utils.CSVReader;
 import eg.edu.guc.dbms.utils.Properties;
 import eg.edu.guc.dbms.utils.btrees.BTreeFactory;
@@ -61,7 +62,7 @@ public class RecoveryManager {
 		return elnoo3;
 		
 	}
-	public void redo(String step) throws IOException, DBEngineException{
+	public void undo(String step) throws IOException, DBEngineException{
 	String[] split = step.split(", ");
 		if(split[0].equals("Insert")){
 		String pageid = split[2];
@@ -79,15 +80,31 @@ public class RecoveryManager {
 				htblColNameValue, "AND", redr, properties, btfactory);
 		delete.execute(h);
 		
+		} else if (split[0].equals("delete")){
+			String pageid = split[2];
+			Hashtable<String,String>htblColNameValue = new Hashtable<String,String>();
+			for(int i=3;i<split.length;i++){
+				String etneen = split[i];
+				etneen= etneen.substring(1,etneen.length()-1);
+				String[] pair = etneen.split(":");
+				htblColNameValue.put(pair[0], pair[1]);
+			}
+			Page h = new Page();
+			PageID k = new PageID(pageid);
+			bufr.read(k, h, true);
+			TupleInsert insert = new TupleInsert(btfactory, 
+			redr, properties,  k.getTableName(),htblColNameValue );
+			insert.execute(h);
+			
 		}
 		
 	}
 	
-	public void undo (String line){
+	public void redo (String line){
 		
 	}
 	
-	public void recover( ) throws IOException{
+	public void recover( ) throws IOException, DBEngineException{
 		Hashtable<String,String> elnoo3 = no3ak();
 		File file = new File(filePath);
 		BufferedReader reader = new BufferedReader(new FileReader(file));

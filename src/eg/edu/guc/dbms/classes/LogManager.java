@@ -82,8 +82,7 @@ public class LogManager {
 		for (int j = 0; j < ValuesArray.length; j++) {
 			values += "(" + keysArray[j] + ":" + ValuesArray[j] + "), ";
 		}
-		String line = "<delete, " + strTransID + ", " + page.getPageID() + "_"
-				+ strKeyValue + ", " + values + ">";
+		String line = "<delete, " + strTransID + ", " + page.getPageID() +", " + values + ">";
 		log.add(line);
 	}
 
