@@ -17,6 +17,31 @@ public class TupleDelete extends Step {
 	private Hashtable<String,String> htblColNameValue;
 	private String strOperator;
 	private CSVReader reader;
+	
+	public String getStrTableName() {
+		return strTableName;
+	}
+
+	public Hashtable<String, String> getHtblColNameValue() {
+		return htblColNameValue;
+	}
+
+	public String getStrOperator() {
+		return strOperator;
+	}
+
+	public CSVReader getReader() {
+		return reader;
+	}
+
+	public Properties getProperties() {
+		return properties;
+	}
+
+	public BTreeFactory getBtfactory() {
+		return btfactory;
+	}
+
 	private Properties properties;
 	private BTreeFactory btfactory;
 	

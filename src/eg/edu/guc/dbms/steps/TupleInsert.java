@@ -26,9 +26,18 @@ public class TupleInsert extends Step {
 		this.tableName = tableName;
 		this.properties = properties;
 		this.htblColNameValue = htblColNameValue;
-
 		// TODO Auto-generated constructor stub
 	}
+
+
+	public Hashtable<String, String> getHtblColNameValue() {
+		return htblColNameValue;
+	}
+
+	public void setHtblColNameValue(Hashtable<String, String> htblColNameValue) {
+		this.htblColNameValue = htblColNameValue;
+	}
+
 
 	public void execute(Page page) {
 		// TODO Auto-generated method stub
