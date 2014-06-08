@@ -39,6 +39,22 @@ public class TransactionManager {
 		transactions.add(transaction);
 	}
 	
+	
+	public void execute(){
+		for(Transaction t : transactions){
+			
+			t.run();
+			
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	public void createTable(String strTableName,
 			Hashtable<String, String> htblColNameType,
 			Hashtable<String, String> htblColNameRefs, String strKeyColName)

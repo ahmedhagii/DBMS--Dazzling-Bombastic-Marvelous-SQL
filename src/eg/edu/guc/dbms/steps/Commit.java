@@ -1,5 +1,7 @@
 package eg.edu.guc.dbms.steps;
 
+import eg.edu.guc.dbms.pages.Page;
+
 public class Commit extends Step {
 
 	public Commit() {
@@ -7,6 +9,12 @@ public class Commit extends Step {
 	}
 
 	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void execute(Page page) {
 		// TODO Auto-generated method stub
 		
 	}
