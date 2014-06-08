@@ -14,19 +14,19 @@ import eg.edu.guc.dbms.utils.Properties;
 import eg.edu.guc.dbms.utils.btrees.BTreeFactory;
 
 public class TupleUpdate extends Step {
-	private String  strTableName;
-	private Hashtable<String,String> htblColNameValue;
+	private String strTableName;
+	private Hashtable<String, String> htblColNameValue;
 	private String strOperator;
 	private CSVReader reader;
 	private Properties properties;
 	private BTreeFactory btfactory;
 	private Hashtable<String, String> htblNewValues;
-	
+
 	public TupleUpdate(String strTableName,
 			Hashtable<String, String> htblColNameValue,
-			Hashtable<String,String> htblNewValuesString, String strOperator,
+			Hashtable<String, String> htblNewValues, String strOperator,
 			CSVReader reader, Properties properties, BTreeFactory btfactory) {
-		super();
+		super(strTableName, htblColNameValue);
 		this.strTableName = strTableName;
 		this.htblColNameValue = htblColNameValue;
 		this.htblNewValues = htblNewValues;
@@ -37,44 +37,52 @@ public class TupleUpdate extends Step {
 	}
 
 	public void execute(Page page) {
-		SelectCommand select = new SelectCommand(btfactory, reader, properties, strOperator, htblColNameValue, strOperator, page);
+		System.out.println(htblNewValues.values());
+		SelectCommand select = new SelectCommand(btfactory, reader, properties,
+				strTableName, htblColNameValue, strOperator, page);
 		try {
+			System.out.println(htblColNameValue.values() + " " + strOperator);
 			select.execute();
 		} catch (DBEngineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ArrayList<Hashtable<String,String>> selectedRecords = select.getResults();
-		for(int i = 0 ; i < selectedRecords.size() ;i++){
-			for(String s : htblNewValues.keySet()){
+		ArrayList<Hashtable<String, String>> selectedRecords = select
+				.getResults();
+		for (int i = 0; i < selectedRecords.size(); i++) {
+			for (String s : htblNewValues.keySet()) {
 				selectedRecords.get(i).put(s, htblNewValues.get(s));
 			}
-			
 		}
-		DeleteCommand delete = new DeleteCommand(strOperator, htblColNameValue, strOperator, reader, properties, btfactory, page);
+		
+		DeleteCommand delete = new DeleteCommand(true, select, strTableName,
+				htblColNameValue, strOperator, reader, properties, btfactory,
+				page);
 		try {
 			delete.execute();
 		} catch (DBEngineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		for(Hashtable<String,String> htbl : selectedRecords){
-		InsertCommand insert = new InsertCommand(btfactory, reader, strOperator, properties, htbl, page);
-		try {
-			insert.execute();
-		} catch (DBEngineException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		System.out.println("SElect Record " + selectedRecords.size());
+		for (Hashtable<String, String> htbl : selectedRecords) {
+			System.out.println(htbl.values() + " Tuple update for");
+			InsertCommand insert = new InsertCommand(btfactory, reader,
+					strTableName, properties, htbl, page);
+			try {
+				insert.execute();
+			} catch (DBEngineException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		}
-		
-		}
-		
-		
+
 	}
 
 	public void execute() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

@@ -102,8 +102,9 @@ public class Properties implements MetaDataListener {
 		
 		for(Hashtable<String, String> row : unparsedData){
 			if( !data.containsKey(row.get("Table Name"))){
-				data.put( row.get("Table Name") , new Hashtable<String,Hashtable<String,String>>());
+				data.put( row.get("Table Name"), new Hashtable<String,Hashtable<String,String>>());
 			}
+//			System.out.println(row.get("Table Name") + " " + row.get("Column Name"));
 			data.get(row.get("Table Name")).put(row.get("Column Name"), new Hashtable<String,String>());
 			data.get(row.get("Table Name")).get(row.get("Column Name")).put("Column Type", row.get("Column Type"));
 			data.get(row.get("Table Name")).get(row.get("Column Name")).put("Key", row.get("Key"));
@@ -154,6 +155,8 @@ public class Properties implements MetaDataListener {
 	
 	
 	public boolean isIndexed(String tblName, String colName){
+		System.out.println(tblName + " " + colName);
+		System.out.println(data.get(tblName).keySet());
 		return data.get(tblName).get(colName).get("Indexed").equals("True");
 	}
 	
@@ -162,6 +165,8 @@ public class Properties implements MetaDataListener {
 	}
 	
 	public boolean isPrimaryKey(String tblName,String colName){
+		System.out.println(tblName + " " + colName);
+		System.out.println(data.get(tblName).size());
 		return data.get(tblName).get(colName).get("Key").equals("True");
 	}
 	

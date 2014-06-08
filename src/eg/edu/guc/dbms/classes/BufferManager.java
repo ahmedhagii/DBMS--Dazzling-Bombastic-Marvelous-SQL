@@ -59,6 +59,10 @@ public class BufferManager implements Runnable {
 		this.usedSlots = 0;
 		this.EmptySlots = MaximumUsedBufferSlots;
 	}
+	
+	public Page getPage(PageID pageID){
+		return UsedSlots.get(pageID);
+	}
 
 	public synchronized void read(PageID pageID, Page page, boolean bModify) throws DBEngineException, IOException {		
 		if (UsedSlots.containsKey(pageID)){

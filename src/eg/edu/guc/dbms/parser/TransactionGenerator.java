@@ -13,10 +13,16 @@ import eg.edu.guc.dbms.steps.Step;
 import eg.edu.guc.dbms.steps.TupleDelete;
 import eg.edu.guc.dbms.steps.TupleInsert;
 import eg.edu.guc.dbms.steps.TupleUpdate;
+import eg.edu.guc.dbms.utils.CSVReader;
+import eg.edu.guc.dbms.utils.Properties;
+import eg.edu.guc.dbms.utils.btrees.BTreeFactory;
 
 public abstract class TransactionGenerator {
 	
-	private static BufferManager bm;
+	public static BufferManager bm;
+	public static Properties prop;
+	public static BTreeFactory bTreeFactory;
+	public static CSVReader reader; 
 	
 	public void setBufferManager(BufferManager bm) {
 		this.bm = bm;
@@ -24,16 +30,17 @@ public abstract class TransactionGenerator {
 	
 	public static Transaction getTransaction(Object[] objects, int type) {
 		Vector<Step> vector = new Vector<Step>();
+		String typeOp = "";
 		switch(type) {
 			case 0: vector = getCreateTableSteps(objects); break;
 			case 1: vector = getCreateIndexSteps(objects); break;
-			case 2: vector = getInsertSteps(objects); break;
-			case 3: vector = getDeleteSteps(objects); break;
-			case 4: vector = getUpdateSteps(objects); break;
+			case 2: vector = getInsertSteps(objects); typeOp = "write";break;
+			case 3: vector = getDeleteSteps(objects); typeOp = "write";break;
+			case 4: vector = getUpdateSteps(objects); typeOp = "write";break;
 			case 5: vector = getSelectSteps(objects); break;
 		}
 		Transaction newTransaction = new Transaction();
-		newTransaction.init(null, null, vector);
+		newTransaction.init(bm, null, vector, typeOp);
 		return newTransaction;
 	}
 
@@ -43,9 +50,10 @@ public abstract class TransactionGenerator {
 		Hashtable<String, String> htblColNameValue = (Hashtable<String, String>)objects[2]; 
 		Vector<Step> vector = new Vector<Step>();
 		
-		PageRead pageRead = new PageRead();
-		TupleDelete tupleDelete = new TupleDelete(tableName, htblColNameValue, strOperator, null, null, null);
+		PageRead pageRead = new PageRead(reader, prop, bTreeFactory, htblColNameValue, tableName);
+		TupleDelete tupleDelete = new TupleDelete(tableName, htblColNameValue, strOperator, reader, prop, bTreeFactory); //mo3addal le tadamon el arguments
 		Commit commit = new Commit();
+
 		PageWrite pageWrite = new PageWrite(bm);
 		
 		vector.add(pageRead);
@@ -61,8 +69,8 @@ public abstract class TransactionGenerator {
 		Hashtable<String, String> htblColNameValue = (Hashtable<String, String>)objects[1]; 
 		Vector<Step> vector = new Vector<Step>();
 		
-		PageRead pageRead = new PageRead();
-		TupleInsert tupleInsert = new TupleInsert(null, null, null, tableName, htblColNameValue);
+		PageRead pageRead = new PageRead(reader, prop, bTreeFactory, htblColNameValue, tableName);
+		TupleInsert tupleInsert = new TupleInsert(bTreeFactory, reader, prop, tableName, htblColNameValue);
 		Commit commit = new Commit();
 		PageWrite pageWrite = new PageWrite(bm);
 		
@@ -85,8 +93,8 @@ public abstract class TransactionGenerator {
 		Hashtable<String, String> htblColNameValue = (Hashtable<String, String>)objects[2]; 
 		Vector<Step> vector = new Vector<Step>();
 		
-		PageRead pageRead = new PageRead();
-		Select select = new Select(null, null, null, tableName, htblColNameValue, strOperator);
+		PageRead pageRead = new PageRead(reader, prop, bTreeFactory, htblColNameValue, tableName);
+		Select select = new Select(bTreeFactory, reader, prop, tableName, htblColNameValue, strOperator);
 		Commit commit = new Commit();
 		
 		vector.add(pageRead);
@@ -105,15 +113,15 @@ public abstract class TransactionGenerator {
 
 		String tableName = (String)objects[0];
 		String strOperator = (String)objects[1];
-		Hashtable<String, String> htblColNameValueCondition = (Hashtable<String, String>)objects[3];
-		Hashtable<String, String> htblColNameValue = (Hashtable<String, String>)objects[4]; 
+		Hashtable<String, String> htblColNameValueCondition = (Hashtable<String, String>)objects[2];
+		Hashtable<String, String> htblColNameValue = (Hashtable<String, String>)objects[3]; 
 		Vector<Step> vector = new Vector<Step>();
 		
-		PageRead pageRead = new PageRead();
-		TupleUpdate tupleUpdate = new TupleUpdate(tableName, htblColNameValue, htblColNameValueCondition, strOperator, null, null, null);
+		PageRead pageRead = new PageRead(reader, prop, bTreeFactory, htblColNameValueCondition, tableName);
+		TupleUpdate tupleUpdate = new TupleUpdate(tableName, htblColNameValueCondition, htblColNameValue, strOperator, reader, prop, bTreeFactory);
 		Commit commit = new Commit();
 		PageWrite pageWrite = new PageWrite(bm);
-		
+
 		vector.add(pageRead);
 		vector.add(tupleUpdate);
 		vector.add(commit);

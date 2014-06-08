@@ -14,6 +14,7 @@ import eg.edu.guc.dbms.commands.InsertCommand;
 import eg.edu.guc.dbms.commands.SelectCommand;
 import eg.edu.guc.dbms.exceptions.DBEngineException;
 import eg.edu.guc.dbms.parser.SQLParser;
+import eg.edu.guc.dbms.parser.TransactionGenerator;
 import eg.edu.guc.dbms.utils.CSVReader;
 import eg.edu.guc.dbms.utils.Properties;
 import eg.edu.guc.dbms.utils.btrees.BTreeFactory;
@@ -46,6 +47,11 @@ public class DBApp {
 		this.rm = new RecoveryManager();
 		this.sqlParser = new SQLParser(tm);
 		
+		TransactionGenerator.prop = properties;
+		TransactionGenerator.bTreeFactory = bTreeFactory;
+		TransactionGenerator.bm = bm;
+		TransactionGenerator.reader = reader;
+		
 		Thread bmThread = new Thread(bm);
 		bmThread.start();
 
@@ -53,9 +59,10 @@ public class DBApp {
 	
 	public static void main (String[]a) throws DBEngineException{
 		DBApp d = new DBApp();
-		String sql = "Insert Into Department(Name, Location)\n" + "VALUES ('MET', 'C7')";
+		String sql = "update Department\n"+ "set Name='po^'\n" + "where Name='MET'";
 		d.sqlParser.SQLParser(sql);
 		d.tm.printInfo();
+		d.tm.execute();
 	}
 
 	public void createTable(String strTableName,
@@ -87,7 +94,7 @@ public class DBApp {
 								Hashtable<String,String> htblColNameValue,
 								String strOperator)
 										throws DBEngineException {
-		DeleteCommand delete = new DeleteCommand(strTableName, htblColNameValue, strOperator, reader,properties,bTreeFactory, null);
+		DeleteCommand delete = new DeleteCommand(false, null, strTableName, htblColNameValue, strOperator, reader,properties,bTreeFactory, null);
 		delete.execute(); 
 	
 	}

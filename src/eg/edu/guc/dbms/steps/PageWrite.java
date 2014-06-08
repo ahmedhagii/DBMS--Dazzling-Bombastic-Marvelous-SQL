@@ -18,6 +18,7 @@ public class PageWrite extends Step {
 		this.page = page;
 		try {
 			bm.write(pageID, page);
+			System.out.println("ANAAAAA AMESH HENAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		} catch (IOException e) {
 			throw new DBEngineException("There was a problem writing the page!");
 		}
@@ -26,5 +27,11 @@ public class PageWrite extends Step {
 	public PageWrite(BufferManager bm) {
 		super();
 		this.bm = bm;
+	}
+
+	@Override
+	public void execute(Page page) {
+		// TODO Auto-generated method stub
+		
 	}	
 }

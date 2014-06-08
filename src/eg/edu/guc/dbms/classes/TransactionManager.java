@@ -6,6 +6,8 @@ import java.util.Iterator;
 
 import eg.edu.guc.dbms.exceptions.DBAppException;
 import eg.edu.guc.dbms.exceptions.DBEngineException;
+import eg.edu.guc.dbms.utils.Properties;
+import eg.edu.guc.dbms.utils.btrees.BTreeFactory;
 
 public class TransactionManager {
 	// TransactionManager will contain the indices B+ tree(s).
@@ -30,6 +32,9 @@ public class TransactionManager {
 	// methods
 
 	ArrayList<Transaction> transactions;
+	public static BufferManager bm;
+	public static Properties prop;
+	public static BTreeFactory bTreeFactory;
 	
 	public TransactionManager() {
 		transactions = new ArrayList<Transaction>();
@@ -44,6 +49,23 @@ public class TransactionManager {
 	
 	public void printInfo() {
 		System.out.println("No. of transactions: " + transactions.size());
+	}
+	
+	public void execute(){
+		for(Transaction t : transactions){		
+			t.run();
+		}
+	}
+	
+	public void createTable(String strTableName,
+			Hashtable<String, String> htblColNameType,
+			Hashtable<String, String> htblColNameRefs, String strKeyColName)
+			throws DBAppException {
+	}
+	
+
+	public void createIndex(String strTableName, String strColName)
+			throws DBAppException {
 	}
 	
 	public void saveAll() throws DBEngineException {

@@ -112,15 +112,14 @@ public class SelectCommand implements Command {
 		this.partialRecords = new ArrayList<ArrayList<String>>();
 
 		for (String key : keys) {
-
-
-
 				ArrayList<String> partialRecord = new ArrayList<String>();
 					ArrayList<Hashtable<String, String>> res = page.getTuples();
 					for (int j = 0; j < res.size(); j++) {
+						System.out.println("Ynahhaaaaar " + res.get(j).get(key) + " " + htblColNameValue.get(key));
 						if (res.get(j) != null
 								&& res.get(j).get(key)
 										.equals(htblColNameValue.get(key))) {
+							System.out.println("HEEEEEEEEEEEEH");
 							String pointer = ""+j;
 							partialRecord.add(pointer);
 						}
