@@ -223,6 +223,10 @@ public class RecoveryManager {
 		while(!undo.isEmpty()){
 			undo(undo.pop());
 		}
+		for(int i = 0;i<redo.size();i++){
+			String x = redo.get(i);
+			redo(x);
+		}
 		
 	}
 }
