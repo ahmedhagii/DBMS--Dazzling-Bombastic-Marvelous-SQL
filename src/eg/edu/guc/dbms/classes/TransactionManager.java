@@ -31,6 +31,9 @@ public class TransactionManager {
 
 	ArrayList<Transaction> transactions;
 	
+	public TransactionManager() {
+		transactions = new ArrayList<Transaction>();
+	}
 	public void init() {
 
 	}
@@ -39,41 +42,10 @@ public class TransactionManager {
 		transactions.add(transaction);
 	}
 	
-	public void createTable(String strTableName,
-			Hashtable<String, String> htblColNameType,
-			Hashtable<String, String> htblColNameRefs, String strKeyColName)
-			throws DBAppException {
-
+	public void printInfo() {
+		System.out.println("No. of transactions: " + transactions.size());
 	}
-
-	public void createIndex(String strTableName, String strColName)
-			throws DBAppException {
-
-	}
-
-	public void insertIntoTable(String strTableName,
-			Hashtable<String, String> htblColNameValue) throws DBAppException {
-
-	}
-
-	public void updateTable(String strTableName,
-			Hashtable<String, String> htblColNameValue) throws DBAppException {
-
-	}
-
-	public void deleteFromTable(String strTableName,
-			Hashtable<String, String> htblColNameValue, String strOperator)
-			throws DBAppException {
-
-	}
-
-	public Iterator selectFromTable(String strTable,
-			Hashtable<String, String> htblColNameValue, String strOperator)
-			throws DBAppException {
-		return null;
-
-	}
-
+	
 	public void saveAll() throws DBEngineException {
 
 	}

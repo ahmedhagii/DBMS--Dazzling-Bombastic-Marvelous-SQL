@@ -3,6 +3,7 @@ package eg.edu.guc.dbms.parser;
 import java.util.Hashtable;
 import java.util.Vector;
 
+import eg.edu.guc.dbms.classes.BufferManager;
 import eg.edu.guc.dbms.classes.Transaction;
 import eg.edu.guc.dbms.steps.Commit;
 import eg.edu.guc.dbms.steps.PageRead;
@@ -14,7 +15,13 @@ import eg.edu.guc.dbms.steps.TupleInsert;
 import eg.edu.guc.dbms.steps.TupleUpdate;
 
 public abstract class TransactionGenerator {
-
+	
+	private static BufferManager bm;
+	
+	public void setBufferManager(BufferManager bm) {
+		this.bm = bm;
+	}
+	
 	public static Transaction getTransaction(Object[] objects, int type) {
 		Vector<Step> vector = new Vector<Step>();
 		switch(type) {
@@ -39,7 +46,7 @@ public abstract class TransactionGenerator {
 		PageRead pageRead = new PageRead();
 		TupleDelete tupleDelete = new TupleDelete(tableName, htblColNameValue, strOperator, null, null, null);
 		Commit commit = new Commit();
-		PageWrite pageWrite = new PageWrite();
+		PageWrite pageWrite = new PageWrite(bm);
 		
 		vector.add(pageRead);
 		vector.add(tupleDelete);
@@ -57,7 +64,7 @@ public abstract class TransactionGenerator {
 		PageRead pageRead = new PageRead();
 		TupleInsert tupleInsert = new TupleInsert(null, null, null, tableName, htblColNameValue);
 		Commit commit = new Commit();
-		PageWrite pageWrite = new PageWrite();
+		PageWrite pageWrite = new PageWrite(bm);
 		
 		vector.add(pageRead);
 		vector.add(tupleInsert);
@@ -105,7 +112,7 @@ public abstract class TransactionGenerator {
 		PageRead pageRead = new PageRead();
 		TupleUpdate tupleUpdate = new TupleUpdate(tableName, htblColNameValue, htblColNameValueCondition, strOperator, null, null, null);
 		Commit commit = new Commit();
-		PageWrite pageWrite = new PageWrite();
+		PageWrite pageWrite = new PageWrite(bm);
 		
 		vector.add(pageRead);
 		vector.add(tupleUpdate);

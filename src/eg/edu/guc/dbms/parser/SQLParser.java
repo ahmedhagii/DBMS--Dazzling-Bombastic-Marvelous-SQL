@@ -230,10 +230,10 @@ public class SQLParser {
 
 		Hashtable<String, String> table = new Hashtable<String, String>();
 
-		cols = cols.substring(cols.indexOf("(") + 1, cols.indexOf(")"));
+		cols = cols.substring(cols.indexOf("(") + 1, cols.indexOf(")")).trim();
 		String[] colNames = cols.split("\\s*,\\s*");
 
-		values = values.substring(values.indexOf("(") + 1, values.indexOf(")"));
+		values = values.substring(values.indexOf("(") + 1, values.indexOf(")")).trim();
 		String[] actualValues = values.split("\\s*,\\s*");
 
 		for (int i = 0; i < actualValues.length; i++)
