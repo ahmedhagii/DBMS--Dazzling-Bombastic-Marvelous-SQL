@@ -48,12 +48,12 @@ public class BufferManager {
 	
 	// methods
 	public void init() {
-	this.UsedSlots = new HashMap<PageID,Page>();
-	this.modified = new HashMap<PageID,Boolean>();
-	this.MinimumEmptyBufferSlots = 3 ;
-	this.MaximumUsedBufferSlots = 1;
-	this.usedSlots = 0;
-	this.EmptySlots = MaximumUsedBufferSlots;
+		this.UsedSlots = new HashMap<PageID,Page>();
+		this.modified = new HashMap<PageID,Boolean>();
+		this.MinimumEmptyBufferSlots = 3 ;
+		this.MaximumUsedBufferSlots = 1;
+		this.usedSlots = 0;
+		this.EmptySlots = MaximumUsedBufferSlots;
 	}
 	
 	public  BufferManager(CSVReader reader){
