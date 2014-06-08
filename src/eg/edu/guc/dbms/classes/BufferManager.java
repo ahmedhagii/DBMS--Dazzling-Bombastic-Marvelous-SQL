@@ -2,6 +2,8 @@ package eg.edu.guc.dbms.classes;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
+
 import eg.edu.guc.dbms.exceptions.DBEngineException;
 import eg.edu.guc.dbms.pages.Page;
 import eg.edu.guc.dbms.pages.PageID;
@@ -61,6 +63,18 @@ public class BufferManager {
 		return UsedSlots.get(pageID);
 	}
 	
+	public synchronized void flush() throws IOException{
+		Iterator<PageID> x = UsedSlots.keySet().iterator();
+		while(x.hasNext()){
+			PageID h = x.next();
+			Page temp = UsedSlots.get(h);
+            boolean modify = modified.get(h);
+            if(modify){
+			this.write(h, temp);
+            }
+		}
+		this.init();
+	}
 	
 	
 	
