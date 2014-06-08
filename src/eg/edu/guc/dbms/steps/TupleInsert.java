@@ -24,6 +24,14 @@ public class TupleInsert extends Step {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Hashtable<String, String> getHtblColNameValue() {
+		return htblColNameValue;
+	}
+
+	public void setHtblColNameValue(Hashtable<String, String> htblColNameValue) {
+		this.htblColNameValue = htblColNameValue;
+	}
+
 	private BTreeFactory btFactory;
 	private CSVReader reader;
 	private String tableName;
