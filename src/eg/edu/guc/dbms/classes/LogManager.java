@@ -49,10 +49,33 @@ public class LogManager {
 
 	public synchronized void recordUpdate(String strTransID, PageID page,
 			String strKeyValue, String strColName, Object objOld, Object objNew) {
-		String line = "<Update, " + strTransID + ", " + page.getPageID() + ", "
-				+ strKeyValue + ", " + strColName + ", " + objOld.toString()
-				+ ", " + objNew.toString() + ">";
-		log.add(line);
+		
+		
+		Object[] keysArray =((Hashtable<String,String>) objOld).keySet().toArray();
+		String[] ValuesArray = new String[keysArray.length];
+		for (int i = 0; i < ValuesArray.length; i++) {
+			ValuesArray[i] = ((Hashtable<String,String>) objOld).get(keysArray[i].toString());
+		}
+		String values = "";
+		for (int j = 0; j < ValuesArray.length; j++) {
+			values += "(" + keysArray[j] + ":" + ValuesArray[j] + "), ";
+		}
+			keysArray =((Hashtable<String,String>) objNew).keySet().toArray();
+			 ValuesArray = new String[keysArray.length];
+			for (int i = 0; i < ValuesArray.length; i++) {
+				ValuesArray[i] = ((Hashtable<String,String>) objOld).get(keysArray[i].toString());
+			}
+			String values2 = "";
+			for (int j = 0; j < ValuesArray.length; j++) {
+				values2 += "(" + keysArray[j] + ":" + ValuesArray[j] + "), ";
+		
+			}
+			
+			String line = "<Update, " + strTransID + ", " + page.getPageID() + ", "
+					 + ", " + strColName + ", " + values +
+					 "-" + values2 + ">";
+			log.add(line);
+		
 	}
 
 	public synchronized void recordInsert(String strTransID, PageID page,

@@ -16,6 +16,7 @@ import eg.edu.guc.dbms.pages.Page;
 import eg.edu.guc.dbms.pages.PageID;
 import eg.edu.guc.dbms.steps.TupleDelete;
 import eg.edu.guc.dbms.steps.TupleInsert;
+import eg.edu.guc.dbms.steps.TupleUpdate;
 import eg.edu.guc.dbms.utils.CSVReader;
 import eg.edu.guc.dbms.utils.Properties;
 import eg.edu.guc.dbms.utils.btrees.BTreeFactory;
@@ -96,15 +97,106 @@ public class RecoveryManager {
 			redr, properties,  k.getTableName(),htblColNameValue );
 			insert.execute(h);
 			
+		} else if (split[0].equals("Update")){
+				String pageid = split[2];
+				String colName = split[3];
+				int i = 4;
+				Hashtable<String,String>htblColNameValueOld = new Hashtable<String,String>();
+
+				while(!split[i].equals("-")){
+					 String[] pair =  split[i].split(":");
+						htblColNameValueOld.put(pair[0],pair[1]);	
+				           i++;
+				}
+				i++;
+				Hashtable<String,String>htblColNameValueNew = new Hashtable<String,String>();
+				while(i<split.length){
+				 String[] pair =  split[i].split(":");
+					htblColNameValueNew.put(pair[0],pair[1]);
+					
+			           i++;
+				}
+				
+				TupleUpdate update = new TupleUpdate(colName, htblColNameValueNew, htblColNameValueOld, "AND", redr, properties, btfactory);
+				Page h = new Page();
+				PageID k = new PageID(pageid);
+				bufr.read(k, h, true);
+				update.execute(h);
+				
+			}
+			
+			
+		}
+		
+	
+	
+	public void redo (String step) throws IOException, DBEngineException{
+		String[] split = step.split(", ");
+		if(split[0].equals("Insert")){
+		String pageid = split[2];
+		Hashtable<String,String>htblColNameValue = new Hashtable<String,String>();
+		for(int i=3;i<split.length;i++){
+			String etneen = split[i];
+			etneen= etneen.substring(1,etneen.length()-1);
+			String[] pair = etneen.split(":");
+			htblColNameValue.put(pair[0], pair[1]);
+		}
+		Page h = new Page();
+		PageID k = new PageID(pageid);
+		bufr.read(k, h, true);
+		TupleInsert insert = new TupleInsert(btfactory, 
+		redr, properties,  k.getTableName(),htblColNameValue );
+		insert.execute(h);
+
+		
+		} else if (split[0].equals("delete")){
+			String pageid = split[2];
+			Hashtable<String,String>htblColNameValue = new Hashtable<String,String>();
+			for(int i=3;i<split.length;i++){
+				String etneen = split[i];
+				etneen= etneen.substring(1,etneen.length()-1);
+				String[] pair = etneen.split(":");
+				htblColNameValue.put(pair[0], pair[1]);
+			}
+
+			Page h = new Page();
+			PageID k = new PageID(pageid);
+			bufr.read(k, h, true);
+			TupleDelete delete = new TupleDelete(k.getTableName(), 
+					htblColNameValue, "AND", redr, properties, btfactory);
+			delete.execute(h);
+			
+		} else if (split[0].equals("Update")){
+			String pageid = split[2];
+			String colName = split[3];
+			int i = 4;
+			Hashtable<String,String>htblColNameValueOld = new Hashtable<String,String>();
+
+			while(!split[i].equals("-")){
+				 String[] pair =  split[i].split(":");
+					htblColNameValueOld.put(pair[0],pair[1]);	
+			           i++;
+			}
+			i++;
+			Hashtable<String,String>htblColNameValueNew = new Hashtable<String,String>();
+			while(i<split.length){
+			 String[] pair =  split[i].split(":");
+				htblColNameValueNew.put(pair[0],pair[1]);
+				
+		           i++;
+			}
+			
+			TupleUpdate update = new TupleUpdate(colName, htblColNameValueOld, htblColNameValueNew, "AND", redr, properties, btfactory);
+			Page h = new Page();
+			PageID k = new PageID(pageid);
+			bufr.read(k, h, true);
+			update.execute(h);
+			
 		}
 		
 	}
 	
-	public void redo (String line){
-		
-	}
-	
-	public void recover( ) throws IOException, DBEngineException{
+	public void recover() throws IOException, DBEngineException{
 		Hashtable<String,String> elnoo3 = no3ak();
 		File file = new File(filePath);
 		BufferedReader reader = new BufferedReader(new FileReader(file));
