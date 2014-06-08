@@ -37,6 +37,13 @@ public class Transaction {
 	 
 	public void execute( ){
 		
+		
+		for(Step step : vSteps){
+			step.execute();
+		}
+		
+		
+		
 	}
 
 }
