@@ -8,5 +8,5 @@ public abstract class Step {
 
 	String tableName;
 	Hashtable<String, String> htblColNameValue;
-	
+	public abstract void execute (Page page);
 }

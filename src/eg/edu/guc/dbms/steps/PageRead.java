@@ -7,6 +7,7 @@ import java.util.Queue;
 import java.util.Set;
 
 import eg.edu.guc.dbms.exceptions.DBEngineException;
+import eg.edu.guc.dbms.pages.Page;
 import eg.edu.guc.dbms.pages.PageID;
 import eg.edu.guc.dbms.utils.CSVReader;
 import eg.edu.guc.dbms.utils.Properties;
@@ -36,7 +37,7 @@ public class PageRead extends Step {
 		return pages;
 	}
 
-	public void execute() {
+	public void execute(Page page) {
 		Set<String> keys = htblColNameValue.keySet();
 		pages = new ArrayList<PageID>();
 		for (String key : keys) {
@@ -62,5 +63,11 @@ public class PageRead extends Step {
 			}
 
 		}
+	}
+
+	
+	public void execute() {
+		// TODO Auto-generated method stub
+		
 	}
 }
