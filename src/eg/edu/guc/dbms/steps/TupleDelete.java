@@ -47,6 +47,7 @@ public class TupleDelete extends Step {
 	
 	public TupleDelete(String strTableName, Hashtable<String,String>htblColNameValue,String strOperator, CSVReader reader, Properties properties,
 			BTreeFactory btfactory) {
+		super(strTableName, htblColNameValue);
 		this.strTableName = strTableName;
 		this.htblColNameValue = htblColNameValue;
 		this.strOperator = strOperator;
@@ -57,7 +58,7 @@ public class TupleDelete extends Step {
 	}
 
 	public void execute(Page page) {
-		DeleteCommand command = new DeleteCommand(strTableName, htblColNameValue, strOperator, reader, properties, btfactory, page);
+		DeleteCommand command = new DeleteCommand(false, null, strTableName, htblColNameValue, strOperator, reader, properties, btfactory, page);
 		try {
 			command.execute();
 		} catch (DBEngineException e) {

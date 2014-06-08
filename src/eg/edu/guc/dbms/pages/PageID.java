@@ -21,6 +21,7 @@ public class PageID {
 	
 	public int getTableNumber(){
 		 String[] str = pageID.split("_");
+		 System.out.println(str[0]);
 		 return Integer.parseInt(str[1]);
 		}
 	
