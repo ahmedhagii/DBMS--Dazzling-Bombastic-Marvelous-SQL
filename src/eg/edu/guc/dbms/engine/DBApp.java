@@ -59,7 +59,7 @@ public class DBApp {
 	
 	public static void main (String[]a) throws DBEngineException{
 		DBApp d = new DBApp();
-		String sql = "update Department\n"+ "set Name='po^'\n" + "where Name='MET'";
+		String sql = "select *\n" + "from Department\n" + "where Location= henak";
 		d.sqlParser.SQLParser(sql);
 		d.tm.printInfo();
 		d.tm.execute();

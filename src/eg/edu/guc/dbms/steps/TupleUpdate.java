@@ -64,9 +64,8 @@ public class TupleUpdate extends Step {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("SElect Record " + selectedRecords.size());
-		for (Hashtable<String, String> htbl : selectedRecords) {
-			System.out.println(htbl.values() + " Tuple update for");
+		
+		for (Hashtable<String, String> htbl : selectedRecords) {	
 			InsertCommand insert = new InsertCommand(btfactory, reader,
 					strTableName, properties, htbl, page);
 			try {
@@ -75,7 +74,6 @@ public class TupleUpdate extends Step {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 		}
 
 	}

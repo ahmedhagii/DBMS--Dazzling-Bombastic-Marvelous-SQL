@@ -155,8 +155,7 @@ public class Properties implements MetaDataListener {
 	
 	
 	public boolean isIndexed(String tblName, String colName){
-		System.out.println(tblName + " " + colName);
-		System.out.println(data.get(tblName).keySet());
+		colName = colName.trim();
 		return data.get(tblName).get(colName).get("Indexed").equals("True");
 	}
 	

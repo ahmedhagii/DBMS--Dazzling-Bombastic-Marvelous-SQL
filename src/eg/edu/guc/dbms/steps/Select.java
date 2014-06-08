@@ -14,7 +14,8 @@ public class Select extends Step {
 	private BTreeFactory btfactory;
 	private CSVReader reader;
 	private String strOperator;
-
+	private Properties prop;
+	
 	public Select(BTreeFactory btfactory, CSVReader reader,
 			Properties properties, String tableName,
 			Hashtable<String, String> htblColNameValue, String strOperator) {
@@ -24,11 +25,12 @@ public class Select extends Step {
 			this.htblColNameValue = htblColNameValue;
 			this.tableName = tableName;
 			this.strOperator = strOperator;
+			prop = properties;
 		// TODO Auto-generated constructor stub
 	}
 
 	public void execute(Page page) {
-		SelectCommand select = new SelectCommand(btfactory, reader, null, strOperator, htblColNameValue, strOperator, page);
+		SelectCommand select = new SelectCommand(btfactory, reader, prop, strOperator, htblColNameValue, strOperator, page);
 		try {
 			select.execute();
 		} catch (DBEngineException e) {
@@ -36,6 +38,9 @@ public class Select extends Step {
 			e.printStackTrace();
 		}
 		select.getResults();
+		System.out.println(select.getResults().size());
+		for(Hashtable<String, String> h : select.getResults())
+			System.out.println(h);
 	}
 
 }

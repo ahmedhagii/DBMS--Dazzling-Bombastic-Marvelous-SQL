@@ -18,7 +18,6 @@ public class PageWrite extends Step {
 		this.page = page;
 		try {
 			bm.write(pageID, page);
-			System.out.println("ANAAAAA AMESH HENAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		} catch (IOException e) {
 			throw new DBEngineException("There was a problem writing the page!");
 		}

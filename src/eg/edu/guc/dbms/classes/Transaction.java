@@ -1,12 +1,14 @@
 package eg.edu.guc.dbms.classes;
 
 import java.io.IOException;
+import java.util.Hashtable;
 import java.util.Vector;
 
 import eg.edu.guc.dbms.exceptions.DBEngineException;
 import eg.edu.guc.dbms.pages.Page;
 import eg.edu.guc.dbms.pages.PageID;
 import eg.edu.guc.dbms.steps.PageRead;
+import eg.edu.guc.dbms.steps.PageWrite;
 import eg.edu.guc.dbms.steps.Step;
 
 public class Transaction implements Runnable {
@@ -46,12 +48,28 @@ public class Transaction implements Runnable {
 			// TODO Auto-generated method stub
 		PageRead read = (PageRead) vSteps.get(0);
 		read.execute(null);
+		PageID temp = null;
+		
+		if(vSteps.size() == 3) {
+			PageID pgid = new PageID("Department_0");
+			page = new Page();
+			try {
+				bufManager.read(pgid, page, false);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (DBEngineException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			vSteps.get(1).execute(page);
+		}
+		
 		for(PageID pgid : read.getPages()){
 			page = new Page();
 			Boolean bModify = type.equals("write") ? true : false;
 			try {
-				System.out.println(pgid.getPageID());
-			 bufManager.read(pgid, page, bModify);
+				bufManager.read(pgid, page, bModify);
 				for(int i = 1 ; i <vSteps.size()-2;i++){
 					vSteps.get(i).execute(page);
 				}
@@ -62,8 +80,18 @@ public class Transaction implements Runnable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			temp = pgid;
 		}
-		vSteps.get(vSteps.size()-1).execute(page);
+		
+		
+
+		if(vSteps.size() > 3)
+			try {
+				((PageWrite)vSteps.get(vSteps.size()-1)).execute(temp, page);
+			} catch (DBEngineException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 
 }

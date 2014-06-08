@@ -57,11 +57,8 @@ public class DeleteCommand implements Command {
 	public void deleteFromTable() throws DBEngineException {
 		ArrayList<String> pointers = select.getResultPointers();
 		for (int i = 0; i < pointers.size(); i++) {
-			// String [] x = ((String) pointers.get(i)).split(" ");
-			// int pageNumber = Integer.parseInt(x[1]);
 			int rowNumber = Integer.parseInt(pointers.get(i));
 			select.page.deleteTuples(rowNumber);
-			// reader.deleteRow(this.strTableName,pageNumber,rowNumber);
 		}
 	}
 

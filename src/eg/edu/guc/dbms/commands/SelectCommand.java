@@ -93,13 +93,14 @@ public class SelectCommand implements Command {
 			throw new DBEngineException("Unknown Opertator");
 		}
 
-		
+		System.out.println(page.getTuples().size());
 		Set<String>columns = page.getTuples().get(0).keySet();
 
 		Set<String> keys = this.htblColNameValue.keySet();
 
 		for (String key : keys) {
 			if (!columns.contains(key)) {
+				System.out.println(key);
 				throw new DBEngineException("Wrong Column Name");
 			}
 		}

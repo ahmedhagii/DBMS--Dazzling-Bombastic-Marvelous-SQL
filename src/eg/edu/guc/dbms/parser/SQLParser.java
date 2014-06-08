@@ -158,7 +158,7 @@ public class SQLParser {
 				sql.indexOf("from"));
 		String from = sql.substring(sql.indexOf("from"), sql.indexOf("where"));
 		String where = sql.substring(sql.indexOf("where"));
-
+		
 		String tableName = getTableName(from);
 		String strOperator = getOp(where);
 		Hashtable<String, String> htblColNameValue = whereHashtableGen(where,
@@ -206,6 +206,7 @@ public class SQLParser {
 
 	private Hashtable<String, String> whereHashtableGen(String where,
 			String strOp) throws DBEngineException {
+		where = where.substring(5).trim();
 		String[] cond = where.split(strOp);
 		Hashtable<String, String> table = new Hashtable<String, String>();
 
