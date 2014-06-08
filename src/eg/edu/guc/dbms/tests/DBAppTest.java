@@ -18,14 +18,14 @@ public class DBAppTest {
 	 */
 	public static void main(String[] args) throws DBEngineException {
 		DBApp dbEngine = new DBApp();
-		//System.out.println(dbEngine.properties.getData());
+//		System.out.println(dbEngine.properties.getData());
 		
-		//testEngine_Meta(dbEngine); //PASSED
+		testEngine_Meta(dbEngine); //PASSED
 		//testEngine_MetaError(); //PASSED
 		//testEngine_MetaDuplicate(); //PASSED
 		// testEngine_MetaRefrence(); //PASSED
 		// --------------------------------
-		//testEngine_Insert(dbEngine); //PASSED
+//		testEngine_Insert(dbEngine); //PASSED
 		//testEngine_DublicateIDInsert(dbEngine);//PASSED
 		//testEngine_NonExistingColumnInsert(dbEngine); //PASSED
 		// -------------------------------------

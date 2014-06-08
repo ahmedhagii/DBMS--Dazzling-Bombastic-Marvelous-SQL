@@ -125,15 +125,20 @@ public class CSVReader implements CSVReaderInterface{
 	
 	public synchronized void writePage(String pageName,ArrayList<Hashtable<String,String>> tuples, String filePath) throws IOException {
 		File file = new File(filePath);
+		BufferedReader reader = new BufferedReader(new FileReader(file));
 		File tmpFile = new File(tmpFilePath);
+		
 		PrintWriter writer = new PrintWriter(new FileWriter(tmpFile));
+		String columns = reader.readLine();
+		writer.println(columns);
+		String [] split  = columns.split(",");
 		for(int i=0;i<tuples.size();i++){
-		String oneTuple = pageName+",";
-		 Iterator<String> x = tuples.get(i).keySet().iterator();
-		 while(x.hasNext()){
-			 oneTuple += x.next();
+		//String oneTuple = pageName+",";
+			String oneTuple = "";
+		 for(int j = 0 ; j<split.length;j++){
+			 oneTuple += tuples.get(i).get(split[j]);
 		 
-		 if(x.hasNext()){
+		 if(j < split.length-1){
 			 oneTuple += ",";
 		 	}
 		 }

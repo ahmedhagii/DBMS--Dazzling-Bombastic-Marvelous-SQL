@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class Page {
-	
+
 	String tableName;
 	int pinCount;
 	ArrayList<Hashtable<String,String>> tuples = new ArrayList<Hashtable<String,String>>();
@@ -35,12 +35,24 @@ public class Page {
 		this.tableName = name;
 	}
 	
+	public String getTableName() {
+		return this.tableName ;
+	}
+	
 	public void setPinCount(int number) {
 		this.pinCount= number;
 	}
 	
 	public int getPinCount() {
 		return this.pinCount;
+	}
+	public String toString(){
+		String print = new String();
+		for(int i=0;i<tuples.size();i++){
+			print+=(tuples.get(i).toString()+"\n");
+		}
+		return print;
+		
 	}
 
 

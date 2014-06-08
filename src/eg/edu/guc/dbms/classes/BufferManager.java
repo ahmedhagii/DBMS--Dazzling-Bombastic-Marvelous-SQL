@@ -3,7 +3,9 @@ package eg.edu.guc.dbms.classes;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Scanner;
 
 import eg.edu.guc.dbms.exceptions.DBEngineException;
 import eg.edu.guc.dbms.pages.Page;
@@ -46,17 +48,18 @@ public class BufferManager {
 	
 	// methods
 	public void init() {
-	this.UsedSlots = new HashMap<PageID,Page>();
-	this.modified = new HashMap<PageID,Boolean>();
-	this.MinimumEmptyBufferSlots = 3 ;
-	this.MaximumUsedBufferSlots = 20;
-	this.usedSlots = 0;
-	this.EmptySlots = MaximumUsedBufferSlots;
+		this.UsedSlots = new HashMap<PageID,Page>();
+		this.modified = new HashMap<PageID,Boolean>();
+		this.MinimumEmptyBufferSlots = 3 ;
+		this.MaximumUsedBufferSlots = 1;
+		this.usedSlots = 0;
+		this.EmptySlots = MaximumUsedBufferSlots;
 	}
 	
 	public  BufferManager(CSVReader reader){
 		this.reader = reader;
 	}
+
 
 	public synchronized void read(PageID pageID, Page page, boolean bModify) throws DBEngineException, IOException {
 		
@@ -76,7 +79,6 @@ public class BufferManager {
 		} else {	
 			usedSlots ++;  EmptySlots--;
 		}
-		page = new Page();
 //		page.setPinCount(1);
 		page.setTableName(pageID.getTableName());
 		page.setTuples(reader.loadPage(pageID.getTableName(), pageID.getTableNumber()));
@@ -86,7 +88,6 @@ public class BufferManager {
 
 	public synchronized void write(PageID pageID, Page page) throws IOException {
 		reader.writePage(pageID.getTableName(), page.getTuples(),
-				"data/"+pageID.getTableName()+"_"+pageID.getTableNumber()+".csv");
+				"data/"+pageID.getTableName()+"_"+pageID.getTableNumber());
 	}
-
 }
