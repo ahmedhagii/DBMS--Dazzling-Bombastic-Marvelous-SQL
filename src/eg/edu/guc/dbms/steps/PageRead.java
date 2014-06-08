@@ -24,6 +24,18 @@ public class PageRead extends Step {
 	private Hashtable<String, String> htblColNameValue;
 	private ArrayList<PageID> pages;
 
+	public PageRead(Properties properties, BTreeFactory btfactory,
+			Hashtable<String, String> htblColNameValue) {
+		super();
+		this.properties = properties;
+		this.btfactory = btfactory;
+		this.htblColNameValue = htblColNameValue;
+	}
+
+	public ArrayList<PageID> getPages() {
+		return pages;
+	}
+
 	public void execute() {
 		Set<String> keys = htblColNameValue.keySet();
 		pages = new ArrayList<PageID>();
